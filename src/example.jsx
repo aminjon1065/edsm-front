@@ -280,7 +280,7 @@ export default function Example() {
                                     </nav>
                                 </div>
                                 <div className="flex-shrink-0 flex bg-gray-700 p-4">
-                                    <a href="#" className="flex-shrink-0 group block">
+                                    <a href="/" className="flex-shrink-0 group block">
                                         <div className="flex items-center">
                                             <div>
                                                 <img
@@ -338,7 +338,7 @@ export default function Example() {
                             </nav>
                         </div>
                         <div className="flex-shrink-0 flex bg-gray-700 p-4">
-                            <a href="#" className="flex-shrink-0 w-full group block">
+                            <a href="/" className="flex-shrink-0 w-full group block">
                                 <div className="flex items-center">
                                     <div>
                                         <img
