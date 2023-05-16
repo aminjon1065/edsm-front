@@ -1,36 +1,58 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
-    isAuth: false,
-    user: {},
-    message: ""
+    token: localStorage.getItem('token') || null,
+    user: null,
+    isLoading: false,
+    error: null,
 };
 
-export const SignInSlice = createSlice({
-    name: "SignIn",
+const authSlice = createSlice({
+    name: 'auth',
     initialState,
     reducers: {
-        signIn: (state, action) => {
-            state.isAuth = true
-            state.user = action.payload?.data
-            state.message = action.payload?.message
+        loginStart(state) {
+            state.isLoading = true;
+            state.error = null;
         },
-        signInError: (state) => {
-            state.isAuth = false
-            state.user = {}
+        loginSuccess(state, action) {
+            state.isLoading = false;
+            state.error = null;
+            state.token = action.payload?.token;
+            state.user = action.payload?.data;
+            localStorage.setItem('token', action.payload?.token);
         },
-        signOut: (state) => {
-            state.isAuth = false
-            state.user = {}
+        loginFailure(state, action) {
+            state.isLoading = false;
+            state.error = action.payload;
         },
-        isAuth: (state, action) => {
-            state.isAuth = true
-            state.user = action.payload
-        }
-    }
+        logout(state) {
+            state.isLoading = false;
+            state.error = null;
+            state.token = null;
+            state.user = null;
+            localStorage.removeItem('token');
+        },
+    },
 });
 
+export const {loginStart, loginSuccess, loginFailure, logout} = authSlice.actions;
 
-export const {signIn, signInError, signOut, isAuth} = SignInSlice.actions;
+export const login = (email, password, device, ip) => async (dispatch) => {
+    dispatch(loginStart());
+    try {
+        const response = await axios.post('http://localhost:8000/api/v1/login', {
+            email: email,
+            password: password,
+            device: device,
+            ip: ip
+        });
+        console.log(response)
+        dispatch(loginSuccess(response.data));
+    } catch (error) {
+        dispatch(loginFailure(error.message));
+    }
+};
 
-export default SignInSlice.reducer;
+export default authSlice.reducer;

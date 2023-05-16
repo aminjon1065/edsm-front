@@ -1,25 +1,14 @@
 import React from 'react';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Auth/Login";
+import {Provider} from 'react-redux';
+import store from './state/store';
+import Pages from "./pages";
 
 const App = () => {
-    const isAuth = false;
     return (
         <>
-            <BrowserRouter>
-                {
-                    isAuth
-                        ?
-                        <Routes>
-                            <Route index element={<Home/>}/>
-                        </Routes>
-                        :
-                        <Routes>
-                            <Route index element={<Login/>}/>
-                        </Routes>
-                }
-            </BrowserRouter>
+            <Provider store={store}>
+                <Pages/>
+            </Provider>
         </>
     );
 };
