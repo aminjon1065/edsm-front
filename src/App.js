@@ -1,7 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Login from "./Pages/Auth/Login";
-import Home from "./Pages/Home";
+import Home from "./pages/Home";
+import Login from "./pages/Auth/Login";
 
 const App = () => {
     const isAuth = false;

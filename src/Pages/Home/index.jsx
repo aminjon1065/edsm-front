@@ -1,10 +1,12 @@
 import React from 'react';
+import {Route, Routes} from "react-router-dom";
+import Dashboard from "../Dashboard";
 
 const Index = () => {
     return (
-        <div>
-            Home
-        </div>
+        <Routes>
+            <Route index element={<Dashboard/>}/>
+        </Routes>
     );
 };
 
