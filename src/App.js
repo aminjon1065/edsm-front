@@ -1,22 +1,24 @@
 import React from 'react';
-import {BrowserRouter, redirect, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "./Pages/Auth/Login";
 import Home from "./Pages/Home";
 
 const App = () => {
-    const isAuth = true;
+    const isAuth = false;
     return (
         <>
             <BrowserRouter>
-                <Routes>
-                    {
-                        isAuth
-                            ?
+                {
+                    isAuth
+                        ?
+                        <Routes>
                             <Route index element={<Home/>}/>
-                            :
-                            <Route element={<Login/>}/>
-                    }
-                </Routes>
+                        </Routes>
+                        :
+                        <Routes>
+                            <Route index element={<Login/>}/>
+                        </Routes>
+                }
             </BrowserRouter>
         </>
     );
