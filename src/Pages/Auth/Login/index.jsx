@@ -1,16 +1,15 @@
-import React, {useState, Fragment, useEffect} from 'react';
+import React, {useState, Fragment} from 'react';
 import {LockClosedIcon} from "@heroicons/react/24/solid";
 import logo from './../../../assets/images/logo.png';
 import usePageTitle from "../../../hooks/usePageTitle";
 import {login} from "../../../state/slices/signIn";
 import {EyeIcon, EyeSlashIcon, ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/20/solid";
 import {Popover, Transition} from '@headlessui/react'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Loader from "../../../components/Loader";
 
 const Index = () => {
     usePageTitle("Войти")
-    const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,12 +17,6 @@ const Index = () => {
     const changeEmail = (event) => {
         setEmail(event.target.value)
     }
-
-    useEffect(() => {
-
-        setIsLoading(false)
-    }, []);
-
     const showPassword = () => {
         setTypePassword((prevState) => !prevState)
     }
@@ -36,6 +29,7 @@ const Index = () => {
         dispatch(login(email, password));
     };
 
+    const isLoading = useSelector(state => state.auth.isLoading);
     return (
         <>
             {
@@ -64,7 +58,6 @@ const Index = () => {
                                         Email адрес
                                     </label>
                                     <div className="mt-2">
-
                                         <input
                                             value={email}
                                             onChange={changeEmail}
@@ -108,7 +101,6 @@ const Index = () => {
                                                                         aria-hidden="true"
                                                                     />
                                                                 }
-
                                                             </div>
                                                         </Popover.Button>
                                                         <Transition
