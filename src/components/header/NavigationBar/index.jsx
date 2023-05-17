@@ -15,10 +15,10 @@ import {
 const navigation = [
     {name: 'Dashboard', href: '#', icon: HomeIcon, current: true},
     {name: 'Управление', href: '/department', icon: UsersIcon, current: false},
-    {name: 'Файлы', href: '#', icon: FolderIcon, current: false},
-    {name: 'Календарь', href: '#', icon: CalendarIcon, current: false},
-    {name: 'Документы', href: '#', icon: InboxIcon, current: false},
-    {name: 'Отчёты', href: '#', icon: ChartBarIcon, current: false},
+    {name: 'Файлы', href: '/files', icon: FolderIcon, current: false},
+    {name: 'Календарь', href: '/calendar', icon: CalendarIcon, current: false},
+    {name: 'Документы', href: '/documents', icon: InboxIcon, current: false},
+    {name: 'Отчёты', href: '/reports', icon: ChartBarIcon, current: false},
 ]
 
 const user = {
@@ -61,12 +61,9 @@ const Index = () => {
                                                 <NavLink
                                                     key={item.name}
                                                     to={item.href}
-                                                    className={classNames(
-                                                        ({isActive}) =>
-                                                            isActive
-                                                                ? 'bg-gray-900 text-white'
-                                                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                                        'rounded-md px-3 py-2 text-sm font-medium'
+                                                    className={({isActive})=> classNames(
+                                                        isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                        'block rounded-md px-3 py-2 text-base font-medium'
                                                     )}
                                                     aria-current={item.current ? 'page' : undefined}
                                                 >

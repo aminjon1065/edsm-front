@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
-import {
-    Bars3Icon,
-} from '@heroicons/react/24/outline'
+import React from 'react';
 import NavigationBar from "../../components/header/NavigationBar";
+import {Route, Routes} from "react-router-dom";
+import Department from "../Department";
 
 export default function Example() {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
 
     return (
         <>
@@ -20,7 +18,9 @@ export default function Example() {
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                                 {/* Replace with your content */}
                                 <div className="py-4">
-                                    <div className="border-4 border-dashed border-gray-200 rounded-lg h-96"/>
+                                    <Routes>
+                                        <Route index path={'/department'} element={<Department/>}/>
+                                    </Routes>
                                 </div>
                                 {/* /End replace */}
                             </div>
