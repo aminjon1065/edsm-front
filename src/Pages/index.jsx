@@ -1,28 +1,44 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./Home";
 import Login from "./Auth/Login";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {checkAuth} from "../state/slices/signIn";
+import Loader from "../components/Loader";
 
 const Index = () => {
-    const isAuth = useSelector(state => state.auth.token)
-    const isAuthUser = useSelector(state => state.auth)
-    console.log(isAuthUser)
+    const isAuth = useSelector(state => state.auth.isAuth);
+    const dispatch = useDispatch()
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            dispatch(checkAuth(token))
+        }
+    }, [dispatch])
+    const selector = useSelector(state => state.auth.isLoading);
     return (
         <>
-            <BrowserRouter>
-                {
-                    isAuth
-                        ?
-                        <Routes>
-                            <Route index element={<Home/>}/>
-                        </Routes>
-                        :
-                        <Routes>
-                            <Route index element={<Login/>}/>
-                        </Routes>
-                }
-            </BrowserRouter>
+            {
+                selector
+                    ?
+                    <div className={"h-screen flex justify-center items-center"}>
+                        <Loader/>
+                    </div>
+                    :
+                    <BrowserRouter>
+                        {
+                            isAuth
+                                ?
+                                <Routes>
+                                    <Route index element={<Home/>}/>
+                                </Routes>
+                                :
+                                <Routes>
+                                    <Route index path="/*" element={<Login/>}/>
+                                </Routes>
+                        }
+                    </BrowserRouter>
+            }
         </>
     );
 };

@@ -6,13 +6,11 @@ import {login} from "../../../state/slices/signIn";
 import {EyeIcon, EyeSlashIcon, ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/20/solid";
 import {Popover, Transition} from '@headlessui/react'
 import {useDispatch} from "react-redux";
-import axios from "axios";
-
+import Loader from "../../../components/Loader";
 
 const Index = () => {
     usePageTitle("Войти")
     const [isLoading, setIsLoading] = useState(true);
-    const [ipAddress, setIpAddress] = useState({mac_address: "", ip_address: ""});
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,17 +20,10 @@ const Index = () => {
     }
 
     useEffect(() => {
-        getInfo().then((res) => setIpAddress({
-            mac_address: res.data.mac_address,
-            ip_address: res.data.ip_address
-        })).catch((err) => console.log(err))
+
         setIsLoading(false)
     }, []);
 
-    // console.log(ipAddress.ip_address)
-    const getInfo = () => {
-        return axios.get('http://localhost:8000/api/mac');
-    }
     const showPassword = () => {
         setTypePassword((prevState) => !prevState)
     }
@@ -42,7 +33,7 @@ const Index = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(login(email, password, ipAddress.mac_address, ipAddress.ip_address));
+        dispatch(login(email, password));
     };
 
     return (
@@ -50,9 +41,9 @@ const Index = () => {
             {
                 isLoading
                     ?
-                    <span>
-                        Loading...
-                    </span>
+                    <div className={"h-screen flex justify-center items-center"}>
+                        <Loader/>
+                    </div>
                     :
                     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -64,9 +55,6 @@ const Index = () => {
                             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                                 Вход в ваш аккаунт
                             </h2>
-                            <span>{ipAddress.ip_address}</span>
-                            <br/>
-                            <span>{ipAddress.mac_address}</span>
                         </div>
                         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                             <form className="space-y-6" onSubmit={handleSubmit}>
@@ -89,7 +77,6 @@ const Index = () => {
                                         />
                                     </div>
                                 </div>
-
                                 <div>
                                     <div className="flex items-center justify-between">
                                         <label htmlFor="password"
@@ -102,8 +89,9 @@ const Index = () => {
                                                     <>
                                                         <Popover.Button
                                                             className={`
-                ${open ? '' : 'text-opacity-90'}
-                font-semibold text-indigo-600 hover:text-indigo-500 focus:outline-0`}
+                                                            ${open ? '' : 'text-opacity-90'}
+                                                            font-semibold text-indigo-600 hover:text-indigo-500 focus:outline-0
+                                                                `}
                                                         >
                                                             <div className="flex">
                                                                 <span>Забыли пароль?</span>
