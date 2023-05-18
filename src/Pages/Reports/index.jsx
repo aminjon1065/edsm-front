@@ -2,11 +2,11 @@ import React from 'react';
 import usePageTitle from "../../hooks/usePageTitle";
 
 const Index = () => {
-    usePageTitle("Департамент")
+    usePageTitle("Отчёты")
     return (
-        <>
-           Department
-        </>
+        <div>
+            Report
+        </div>
     );
 };
 

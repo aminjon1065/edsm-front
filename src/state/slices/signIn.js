@@ -68,7 +68,7 @@ export const checkAuth = (token) => async (dispatch) => {
             })
         dispatch(checkAuthSuccess(response.data))
     } catch (e) {
-        console.log(e)
+        localStorage.removeItem("token")
     }
 }
 
