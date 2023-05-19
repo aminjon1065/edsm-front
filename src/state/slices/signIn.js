@@ -51,7 +51,6 @@ export const login = (email, password) => async (dispatch) => {
             email: email,
             password: password,
         });
-        console.log(response)
         dispatch(loginSuccess(response.data));
     } catch (error) {
         dispatch(loginFailure(error.message));
@@ -66,9 +65,15 @@ export const checkAuth = (token) => async (dispatch) => {
             {
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
             })
+        if (response.status === 401) {
+            console.log("res401")
+            dispatch(loginFailure(response.message));
+        }
         dispatch(checkAuthSuccess(response.data))
     } catch (e) {
         localStorage.removeItem("token")
+        dispatch(loginFailure('error'));
+
     }
 }
 
