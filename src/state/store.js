@@ -1,14 +1,17 @@
-import {configureStore} from '@reduxjs/toolkit';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/signIn';
-import apiInboxData from "../services/fetchInboxData";
+import inboxAPI from "../services/inboxApi";
+
+
+const rootReducer = combineReducers({
+    auth:authReducer,
+    [inboxAPI.reducerPath]:inboxAPI.reducer
+})
 
 const store = configureStore({
-    reducer: {
-        auth: authReducer,
-        [apiInboxData.reducerPath]: apiInboxData.reducer,
-    },
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(apiInboxData.middleware),
+        getDefaultMiddleware().concat(inboxAPI.middleware),
 });
 
 export default store;
