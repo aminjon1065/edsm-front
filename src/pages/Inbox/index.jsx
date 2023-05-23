@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import usePageTitle from "../../hooks/usePageTitle";
 import {useGetMessagesQuery} from "../../services/inbox.service";
+import Loader from "../../components/Loader";
 
 const Index = () => {
     usePageTitle("Входящие")
@@ -31,16 +32,14 @@ const Index = () => {
     }
 
     if (isLoading) {
-        return <span>Loading...</span>
+        return <div className={"min-h-screen flex items-center justify-center"}><Loader/></div>
     }
 
     if (error) {
         return <span>Error!</span>
     }
     return (
-        <div>
-            Inbox
-        </div>
+        <div>Inbox</div>
     );
 };
 
