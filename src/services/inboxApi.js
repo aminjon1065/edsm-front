@@ -1,10 +1,10 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import axios from "axios";
 
-const inboxAPI = createApi({
+export const inboxAPI = createApi({
     reducerPath: 'inboxAPI',
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://localhost:8000/api/v1",
+        baseUrl: "https://localhost:8000/api/v1/",
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
             headers.set('Authorization', `Bearer ${token}`);
@@ -14,7 +14,7 @@ const inboxAPI = createApi({
             const response = await axios(url, options);
 
             if (response.status === 401) {
-                // Обработка ошибки авторизации, если необходимо
+                console.log('error')
             }
 
             return response;
@@ -22,10 +22,9 @@ const inboxAPI = createApi({
     }),
     endpoints: (build) => ({
         fetchMails: build.query({
-            query: () => '/inbox'
+            query: () => 'inbox'
         })
     })
 })
 
-export const {useFetchMails} = inboxAPI;
-export default inboxAPI;
+export const {useFetchMailsQuery} = inboxAPI;

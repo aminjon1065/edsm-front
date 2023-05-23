@@ -1,11 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import usePageTitle from "../../hooks/usePageTitle";
-import {useFetchMails} from "../../services/inboxApi";
+import useBackendApi from "../../services/inbox.service";
 
 const Index = () => {
+    const api  = useBackendApi();
     usePageTitle("Входящие")
-    const {data} = useFetchMails();
-    console.log(data)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Пример GET запроса
+                const response = await api.get('/inbox');
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        if (api) {
+            fetchData();
+        }
+    }, [api]);
     return (
         <div>
             Inbox

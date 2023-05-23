@@ -1,11 +1,12 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/signIn';
-import inboxAPI from "../services/inboxApi";
-
+// import {inboxAPIService} from "../services/inboxAPI.service";
+import {inboxAPI} from "../services/inboxApi";
 
 const rootReducer = combineReducers({
-    auth:authReducer,
-    [inboxAPI.reducerPath]:inboxAPI.reducer
+    auth: authReducer,
+    // [inboxAPIService.reducerPath]:inboxAPIService.reducer
+    [inboxAPI.reducerPath]: inboxAPI.reducer
 })
 
 const store = configureStore({
