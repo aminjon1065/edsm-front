@@ -1,43 +1,21 @@
-import {useEffect, useState} from 'react';
-import axios from 'axios';
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import {API_APP} from "../helper/CONSTANTS";
 
-const useBackendApi = () => {
-    const [api, setApi] = useState(null);
-    useEffect(() => {
-        const initializeApi = () => {
-            const instance = axios.create({
-                baseURL: 'https://localhost:8000/api/v1',
-            });
+export const messagesApi = createApi({
+    reducerPath: "messagesApi",
+    baseQuery: fetchBaseQuery({
+        baseUrl: API_APP,
+        prepareHeaders: (headers) => {
+            const token = localStorage.getItem("token")
+            headers.set('authorization', `Bearer ${token}`)
+            return headers
+        }
+    }),
+    endpoints: (build) => ({
+        getMessages: build.query({
+            query: (page) => `inbox?page=${page}`,
+        })
+    })
+});
 
-            instance.interceptors.request.use(
-                (config) => {
-                    // Можете здесь вставить логику для добавления заголовков, обработки токена и т.д.
-                    return config;
-                },
-                (error) => {
-                    return Promise.reject(error);
-                }
-            );
-
-            instance.interceptors.response.use(
-                (response) => {
-                    // Можете здесь добавить логику для обработки успешных ответов
-
-                    return response;
-                },
-                (error) => {
-                    // Можете здесь добавить логику для обработки ошибок
-                    return Promise.reject(error);
-                }
-            );
-
-            setApi(instance);
-        };
-
-        initializeApi();
-    }, []);
-
-    return api;
-};
-
-export default useBackendApi;
+export const {useGetMessagesQuery} = messagesApi
