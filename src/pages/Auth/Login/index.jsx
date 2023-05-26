@@ -29,17 +29,19 @@ const Index = () => {
         dispatch(login(email, password));
     };
 
-    const isLoading = useSelector(state => state.auth.isLoading);
+    const auth = useSelector(state => state.auth);
+    console.log(auth)
     return (
         <>
             {
-                isLoading
+                auth.isLoading
                     ?
                     <div className={"h-screen flex justify-center items-center"}>
                         <Loader/>
                     </div>
                     :
                     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                             <img
                                 className="mx-auto h-28 w-auto"
@@ -177,6 +179,19 @@ const Index = () => {
                                 </div>
                             </form>
                         </div>
+                        {
+                            auth.error
+                                ?
+                                <div className={"max-w-4xl mx-auto mt-5"}>
+                                    <div className="px-4 py-3 leading-normal text-red-700 bg-red-100 rounded-lg"
+                                         role="alert">
+                                        <p className="font-bold">Вы ввели не правильный логин или пароль!</p>
+                                        <p>Пожалуйста проверьте данные и попробуйте ещё раз!</p>
+                                    </div>
+                                </div>
+                                :
+                                null
+                        }
                     </div>
 
             }
