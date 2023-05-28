@@ -1,13 +1,14 @@
-import { Fragment, useRef, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { EnvelopeIcon } from '@heroicons/react/24/outline'
+import {Fragment, useRef, useState} from 'react'
+import {Dialog, Transition} from '@headlessui/react'
+import {EnvelopeIcon} from '@heroicons/react/24/outline'
 import Select from "react-tailwindcss-select";
+import {useDropzone} from 'react-dropzone'
 
-export default function Index({ open, setOpen }) {
+export default function Index({open, setOpen}) {
     const options = [
-        { value: "fox", label: "🦊 Fox" },
-        { value: "Butterfly", label: "🦋 Butterfly" },
-        { value: "Honeybee", label: "🐝 Honeybee" }
+        {value: "fox", label: "🦊 Fox"},
+        {value: "Butterfly", label: "🦋 Butterfly"},
+        {value: "Honeybee", label: "🐝 Honeybee"}
     ];
     const [option, setOption] = useState(null)
     const cancelButtonRef = useRef(null)
@@ -15,6 +16,8 @@ export default function Index({ open, setOpen }) {
         console.log(value);
         setOption(value);
     }
+    const {getRootProps, getInputProps} = useDropzone({noClick: false})
+    console.log(getRootProps)
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -27,7 +30,7 @@ export default function Index({ open, setOpen }) {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"/>
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
@@ -54,7 +57,7 @@ export default function Index({ open, setOpen }) {
                                         </div>
                                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                             <Dialog.Title as="h3"
-                                                className="text-base font-semibold leading-6 text-gray-900">
+                                                          className="text-base font-semibold leading-6 text-gray-900">
                                                 Новое письмо
                                             </Dialog.Title>
                                             <div className="mt-2">
@@ -62,18 +65,21 @@ export default function Index({ open, setOpen }) {
                                                     <div className="space-y-8 divide-y divide-gray-200">
                                                         <div>
                                                             <div
-                                                                className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                                                className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3">
+
                                                                 <div className="sm:col-span-4">
                                                                     <label htmlFor="username"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         Кому
+                                                                        <sup
+                                                                            className={"text-red-500 font-bold"}>*</sup>
                                                                     </label>
                                                                     <div className="mt-1 flex rounded-md shadow-sm">
-                                                                        {/*<span*/}
-                                                                        {/*    className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">*/}
-                                                                        {/*  workcation.com/*/}
-                                                                        {/*</span>*/}
                                                                         <Select
+                                                                            id={"username"}
+                                                                            primaryColor={"indigo"}
+                                                                            noOptionsMessage={"Такого пользователя не существует"}
+                                                                            searchInputPlaceholder={""}
                                                                             isSearchable
                                                                             isMultiple
                                                                             value={option}
@@ -83,15 +89,29 @@ export default function Index({ open, setOpen }) {
                                                                         />
                                                                     </div>
                                                                 </div>
-
+                                                                <div className="sm:col-span-4">
+                                                                    <label htmlFor="title"
+                                                                           className="block text-sm font-medium text-gray-700">
+                                                                        Заголовок
+                                                                        <sup
+                                                                            className={"text-red-500 font-bold"}>*</sup>
+                                                                    </label>
+                                                                    <div className="mt-1 rounded-md shadow-sm">
+                                                                        <input
+                                                                            type="text"
+                                                                            id={"title"}
+                                                                            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                                                        />
+                                                                    </div>
+                                                                </div>
                                                                 <div className="sm:col-span-6">
-                                                                    <label htmlFor="about"
-                                                                        className="block text-sm font-medium text-gray-700">
-                                                                        About
+                                                                    <label htmlFor="description"
+                                                                           className="block text-sm font-medium text-gray-700">
+                                                                        Текст
                                                                     </label>
                                                                     <div className="mt-1">
                                                                         <textarea
-                                                                            id="about"
+                                                                            id="description"
                                                                             name="about"
                                                                             rows={3}
                                                                             className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
@@ -104,14 +124,17 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-6">
                                                                     <label htmlFor="photo"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         Photo
                                                                     </label>
                                                                     <div className="mt-1 flex items-center">
-                                                                        <span className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                                                                            <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                                                                        <span
+                                                                            className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                                                                            <svg className="h-full w-full text-gray-300"
+                                                                                 fill="currentColor"
+                                                                                 viewBox="0 0 24 24">
                                                                                 <path
-                                                                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"/>
                                                                             </svg>
                                                                         </span>
                                                                         <button
@@ -125,10 +148,11 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-6">
                                                                     <label htmlFor="cover-photo"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         Cover photo
                                                                     </label>
                                                                     <div
+                                                                        {...getRootProps()}
                                                                         className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
                                                                         <div className="space-y-1 text-center">
                                                                             <svg
@@ -151,10 +175,12 @@ export default function Index({ open, setOpen }) {
                                                                                     className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                                                                                 >
                                                                                     <span>Upload a file</span>
-                                                                                    <input id="file-upload"
+                                                                                    <input
+                                                                                        {...getInputProps()}
+                                                                                        id="file-upload"
                                                                                         name="file-upload"
                                                                                         type="file"
-                                                                                        className="sr-only" />
+                                                                                        className="sr-only"/>
                                                                                 </label>
                                                                                 <p className="pl-1">or drag and drop</p>
                                                                             </div>
@@ -177,7 +203,7 @@ export default function Index({ open, setOpen }) {
                                                                 className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                                                                 <div className="sm:col-span-3">
                                                                     <label htmlFor="first-name"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         First name
                                                                     </label>
                                                                     <div className="mt-1">
@@ -193,7 +219,7 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-3">
                                                                     <label htmlFor="last-name"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         Last name
                                                                     </label>
                                                                     <div className="mt-1">
@@ -209,7 +235,7 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-4">
                                                                     <label htmlFor="email"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         Email address
                                                                     </label>
                                                                     <div className="mt-1">
@@ -225,7 +251,7 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-3">
                                                                     <label htmlFor="country"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         Country
                                                                     </label>
                                                                     <div className="mt-1">
@@ -244,7 +270,7 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-6">
                                                                     <label htmlFor="street-address"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         Street address
                                                                     </label>
                                                                     <div className="mt-1">
@@ -260,7 +286,7 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-2">
                                                                     <label htmlFor="city"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         City
                                                                     </label>
                                                                     <div className="mt-1">
@@ -276,7 +302,7 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-2">
                                                                     <label htmlFor="region"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         State / Province
                                                                     </label>
                                                                     <div className="mt-1">
@@ -292,7 +318,7 @@ export default function Index({ open, setOpen }) {
 
                                                                 <div className="sm:col-span-2">
                                                                     <label htmlFor="postal-code"
-                                                                        className="block text-sm font-medium text-gray-700">
+                                                                           className="block text-sm font-medium text-gray-700">
                                                                         ZIP / Postal code
                                                                     </label>
                                                                     <div className="mt-1">
@@ -334,7 +360,7 @@ export default function Index({ open, setOpen }) {
                                                                             </div>
                                                                             <div className="ml-3 text-sm">
                                                                                 <label htmlFor="comments"
-                                                                                    className="font-medium text-gray-700">
+                                                                                       className="font-medium text-gray-700">
                                                                                     Comments
                                                                                 </label>
                                                                                 <p className="text-gray-500">Get
@@ -353,7 +379,7 @@ export default function Index({ open, setOpen }) {
                                                                             </div>
                                                                             <div className="ml-3 text-sm">
                                                                                 <label htmlFor="candidates"
-                                                                                    className="font-medium text-gray-700">
+                                                                                       className="font-medium text-gray-700">
                                                                                     Candidates
                                                                                 </label>
                                                                                 <p className="text-gray-500">Get
@@ -372,7 +398,7 @@ export default function Index({ open, setOpen }) {
                                                                             </div>
                                                                             <div className="ml-3 text-sm">
                                                                                 <label htmlFor="offers"
-                                                                                    className="font-medium text-gray-700">
+                                                                                       className="font-medium text-gray-700">
                                                                                     Offers
                                                                                 </label>
                                                                                 <p className="text-gray-500">Get
@@ -400,7 +426,7 @@ export default function Index({ open, setOpen }) {
                                                                                 className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                                                             />
                                                                             <label htmlFor="push-everything"
-                                                                                className="ml-3 block text-sm font-medium text-gray-700">
+                                                                                   className="ml-3 block text-sm font-medium text-gray-700">
                                                                                 Everything
                                                                             </label>
                                                                         </div>
@@ -412,7 +438,7 @@ export default function Index({ open, setOpen }) {
                                                                                 className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                                                             />
                                                                             <label htmlFor="push-email"
-                                                                                className="ml-3 block text-sm font-medium text-gray-700">
+                                                                                   className="ml-3 block text-sm font-medium text-gray-700">
                                                                                 Same as email
                                                                             </label>
                                                                         </div>
@@ -424,7 +450,7 @@ export default function Index({ open, setOpen }) {
                                                                                 className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300"
                                                                             />
                                                                             <label htmlFor="push-nothing"
-                                                                                className="ml-3 block text-sm font-medium text-gray-700">
+                                                                                   className="ml-3 block text-sm font-medium text-gray-700">
                                                                                 No push notifications
                                                                             </label>
                                                                         </div>

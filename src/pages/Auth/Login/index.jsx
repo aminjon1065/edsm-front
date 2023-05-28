@@ -185,8 +185,7 @@ const Index = () => {
                                 <div className={"max-w-4xl mx-auto mt-5"}>
                                     <div className="px-4 py-3 leading-normal text-red-700 bg-red-100 rounded-lg"
                                          role="alert">
-                                        <p className="font-bold">Вы ввели не правильный логин или пароль!</p>
-                                        <p>Пожалуйста проверьте данные и попробуйте ещё раз!</p>
+                                        <p className="font-bold">{auth.error}</p>
                                     </div>
                                 </div>
                                 :

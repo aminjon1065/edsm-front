@@ -22,6 +22,12 @@ const authSlice = createSlice({
             state.error = null;
             state.user = action.payload.user;
         },
+        checkAuthFailure(state, action) {
+            state.isLoading = false;
+            state.isAuth = false;
+            state.error = action.payload;
+            state.user = action.payload.user;
+        },
         loginSuccess(state, action) {
             state.isLoading = false;
             state.isAuth = true;
@@ -42,7 +48,7 @@ const authSlice = createSlice({
     },
 });
 
-export const {loginStart, checkAuthSuccess, loginSuccess, loginFailure, logout} = authSlice.actions;
+export const {loginStart, checkAuthSuccess,checkAuthFailure, loginSuccess, loginFailure, logout} = authSlice.actions;
 
 export const login = (email, password) => async (dispatch) => {
     dispatch(loginStart());
@@ -53,7 +59,7 @@ export const login = (email, password) => async (dispatch) => {
         });
         dispatch(loginSuccess(response.data));
     } catch (error) {
-        dispatch(loginFailure(error.message));
+        dispatch(loginFailure("Не правильный логин или пароль!"));
     }
 };
 
@@ -67,12 +73,12 @@ export const checkAuth = (token) => async (dispatch) => {
             })
         if (response.status === 401) {
             console.log("res401")
-            dispatch(loginFailure(response.message));
+            dispatch(checkAuthFailure(response.message));
         }
         dispatch(checkAuthSuccess(response.data))
     } catch (e) {
-        localStorage.removeItem("token")
-        dispatch(loginFailure('error'));
+        // localStorage.removeItem("token")
+        dispatch(checkAuthFailure('Время токена закончено, авторизуйтесь заново!'));
 
     }
 }
