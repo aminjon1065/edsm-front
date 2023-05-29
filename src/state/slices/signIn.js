@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_APP } from '../../helper/CONSTANTS';
 
 const initialState = {
     isAuth: false,
@@ -53,7 +54,7 @@ export const {loginStart, checkAuthSuccess,checkAuthFailure, loginSuccess, login
 export const login = (email, password) => async (dispatch) => {
     dispatch(loginStart());
     try {
-        const response = await axios.post('http://localhost:8000/api/v1/login', {
+        const response = await axios.post(`${API_APP}/login`, {
             email: email,
             password: password,
         });
@@ -67,7 +68,7 @@ export const login = (email, password) => async (dispatch) => {
 export const checkAuth = (token) => async (dispatch) => {
     dispatch(loginStart())
     try {
-        const response = await axios.get('http://localhost:8000/api/v1/checkAuth',
+        const response = await axios.get(`${API_APP}/checkAuth`,
             {
                 headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
             })
