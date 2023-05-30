@@ -12,7 +12,8 @@ const Index = () => {
     const [pageNum, setPageNum] = useState(1);
     const {data = [], isLoading, error} = useGetMessagesQuery(pageNum);
     const [pageLinks, setPageLinks] = useState([]);
-    const userSelector = useSelector(state => state.auth.user)
+    const userSelector = useSelector(state => state.auth.user);
+
     const prevPage = () => {
         if (pageNum === 1) {
             setPageNum(1)
@@ -64,36 +65,36 @@ const Index = () => {
                         data.data.length > 0
                             ?
                             <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
+                                <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-50  ">
+                                    <thead className="bg-gray-50 dark:bg-gray-800">
                                     <tr>
                                         <th
                                             scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider"
                                         >
                                             ID Документа
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider"
                                         >
                                             От куда
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider"
                                         >
                                             ТИП
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider"
                                         >
                                             От
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-white uppercase tracking-wider"
                                         >
                                             Role
                                         </th>
@@ -102,20 +103,20 @@ const Index = () => {
                                         </th>
                                     </tr>
                                     </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
+                                    <tbody className="bg-white dark:bg-slate-600 divide-y divide-gray-200">
                                     {data.data.map((mail, index) =>
                                         (
                                             <tr key={mail.id}
-                                                className={`${mail?.opened_mail[0]?.opened ? "bg-slate-50" : "bg-slate-300"} cursor-pointer`}>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mail.document.uuid}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mail.document.region}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
+                                                className={`${mail?.opened_mail[0]?.opened ? "bg-slate-50 dark:bg-slate-600" : "bg-slate-400 dark:bg-slate-800"} cursor-pointer`}>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{mail.document.uuid}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{mail.document.region}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">{mail.document.type === '1' ?
                                                     <span
                                                         className={"bg-orange-300 text-slate-950 px-4 py-2 rounded"}>Вне</span> :
                                                     <span
                                                         className={"bg-green-300 text-slate-950 px-4 py-2 rounded"}>Локальный</span>}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.from_user_name}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.id}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">{mail.from_user_name}</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-white">{mail.id}</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <a href="/"
                                                        className="text-indigo-600 hover:text-indigo-900">

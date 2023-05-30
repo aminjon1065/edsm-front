@@ -4,15 +4,20 @@ import {EnvelopeIcon} from '@heroicons/react/24/outline'
 import Select from "react-tailwindcss-select";
 import {useDropzone} from 'react-dropzone'
 import api from "../../services/api";
+import {Editor} from "react-draft-wysiwyg";
 
 export default function Index({open, setOpen}) {
     const [option, setOption] = useState(null)
+    const [htmlContent, setHtmlContent] = useState("");
     const cancelButtonRef = useRef(null)
     const [usersList, setUsersList] = useState([]);
     useEffect(() => {
         fetchUsers()
     }, []);
-
+    const getContent = (htmlContentProp) => {
+        setHtmlContent(htmlContentProp);
+        console.log(htmlContent)
+    };
     const fetchUsers = async () => {
         api.get('/users').then((response) => {
             setUsersList(response.data)
@@ -25,6 +30,8 @@ export default function Index({open, setOpen}) {
         setOption(value);
     }
     const {getRootProps, getInputProps} = useDropzone({noClick: false})
+    console.log(htmlContent)
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -92,7 +99,7 @@ export default function Index({open, setOpen}) {
                                                                             value={option}
                                                                             onChange={handleChange}
                                                                             options={usersList}
-                                                                            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                                                            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-700 sm:text-sm sm:leading-6 outline-0"
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -116,15 +123,18 @@ export default function Index({open, setOpen}) {
                                                                            className="block text-sm font-medium text-gray-700">
                                                                         Текст
                                                                     </label>
-                                                                    <div className="mt-1">
-                                                                        <textarea
-                                                                            id="description"
-                                                                            name="about"
-                                                                            rows={3}
-                                                                            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                                                            defaultValue={''}
-                                                                        />
+                                                                    <div className="text-sm text-gray-500 border border-gray-300">
+                                                                        <Editor getContent={getContent}/>
                                                                     </div>
+                                                                    {/*<div className="mt-1">*/}
+                                                                    {/*    <textarea*/}
+                                                                    {/*        id="description"*/}
+                                                                    {/*        name="about"*/}
+                                                                    {/*        rows={3}*/}
+                                                                    {/*        className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"*/}
+                                                                    {/*        defaultValue={''}*/}
+                                                                    {/*    />*/}
+                                                                    {/*</div>*/}
                                                                     <p className="mt-2 text-sm text-gray-500">
                                                                         дополнение, тело документа, примечание и т.д.
                                                                     </p>
