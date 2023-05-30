@@ -1,8 +1,9 @@
 import axios from 'axios';
+import {API_APP} from "../helper/CONSTANTS";
 
 // Создаем экземпляр Axios
 const api = axios.create({
-    baseURL: 'https://localhost:8000/api/v1',
+    baseURL: `${API_APP}`,
 });
 
 // Добавляем перехватчик
