@@ -7,9 +7,9 @@ const Index = ({getContent}) => {
         EditorState.createEmpty()
     );
     const handleEditorChange = (state) => {
+        console.log(state);
         setEditorState(state);
         sendContent();
-        console.log(state)
     };
     const sendContent = () => {
         getContent(draftToHtml(convertToRaw(editorState?.getCurrentContent())));
@@ -18,6 +18,7 @@ const Index = ({getContent}) => {
     return (
         <>
             <Editor
+            editorStyle={{borderRadius:'5px', color:'red'}}
                 editorState={editorState}
                 toolbarClassName="bg-gray-200 border border-gray-300 rounded p-2"
                 toolbar={{

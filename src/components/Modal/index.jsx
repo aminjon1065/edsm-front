@@ -30,8 +30,7 @@ export default function Index({open, setOpen}) {
         setOption(value);
     }
     const {getRootProps, getInputProps} = useDropzone({noClick: false})
-    console.log(htmlContent)
-
+    console.log("html", htmlContent);
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
