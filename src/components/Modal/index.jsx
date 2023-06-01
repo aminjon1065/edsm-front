@@ -4,7 +4,7 @@ import {EnvelopeIcon} from '@heroicons/react/24/outline'
 import Select from "react-tailwindcss-select";
 import {useDropzone} from 'react-dropzone'
 import api from "../../services/api";
-import {Editor} from "react-draft-wysiwyg";
+import Editor from "./../editor";
 
 export default function Index({open, setOpen}) {
     const [option, setOption] = useState(null)
@@ -30,7 +30,7 @@ export default function Index({open, setOpen}) {
         setOption(value);
     }
     const {getRootProps, getInputProps} = useDropzone({noClick: false})
-    console.log("html", htmlContent);
+    console.log(htmlContent);
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -122,7 +122,8 @@ export default function Index({open, setOpen}) {
                                                                            className="block text-sm font-medium text-gray-700">
                                                                         Текст
                                                                     </label>
-                                                                    <div className="text-sm text-gray-500 border border-gray-300">
+                                                                    <div
+                                                                        className="text-sm text-gray-500 border border-gray-300">
                                                                         <Editor getContent={getContent}/>
                                                                     </div>
                                                                     {/*<div className="mt-1">*/}
