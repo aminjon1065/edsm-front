@@ -28,9 +28,7 @@ const Index = () => {
         e.preventDefault();
         dispatch(login(email, password));
     };
-
     const auth = useSelector(state => state.auth);
-    console.log(auth)
     return (
         <>
             {

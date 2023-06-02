@@ -7,6 +7,7 @@ import Modal from "../../components/Modal";
 import {EnvelopeIcon} from "@heroicons/react/24/outline";
 import {ChevronDownIcon} from '@heroicons/react/20/solid'
 import {Menu, Transition} from "@headlessui/react";
+import Datepicker from "react-tailwindcss-datepicker";
 
 const Index = () => {
     usePageTitle("Входящие")
@@ -15,6 +16,15 @@ const Index = () => {
     const {data = [], isLoading, error} = useGetMessagesQuery(pageNum);
     const [pageLinks, setPageLinks] = useState([]);
     const userSelector = useSelector(state => state.auth.user);
+    const [searchText, setSearchText] = useState('')
+    const [value, setValue] = useState({
+        startDate: new Date(),
+        endDate: new Date().setMonth(11)
+    });
+    const handleValueChange = (newValue) => {
+        console.log("newValue:", newValue);
+        setValue(newValue);
+    }
 
     const prevPage = () => {
         if (pageNum === 1) {
@@ -49,21 +59,47 @@ const Index = () => {
     const showModal = () => {
         setOpen(true)
     }
+    const handleSearchText = (event) => {
+        setSearchText(event.target.value)
+    }
+    console.log(searchText)
     return (
         <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-
                     <div className='flex justify-start mb-5'>
                         <div>
                             <button className='px-4 py-2 bg-slate-800 text-white rounded-md hover:bg-slate-600 flex'
-                                    onClick={showModal}><EnvelopeIcon className="block h-6 w-6 mr-2"
-                                                                      aria-hidden="true"/> Новое письмо
+                                    onClick={showModal}>
+                                <EnvelopeIcon
+                                    className="block h-6 w-6 mr-2"
+                                    aria-hidden="true"/>
+                                Новое письмо
                             </button>
                             <Modal open={open} setOpen={setOpen}/>
                         </div>
                     </div>
                     <div className='flex justify-end mb-5'>
+                        <div className="relative w-1/4 mr-1">
+                            <Datepicker
+                                className={"bg-red-700"}
+                                i18n={"ru"}
+                                useRange
+                                showShortcuts={true}
+                                configs={{
+                                    shortcuts: {
+                                        today: "Сегодня",
+                                        yesterday: "Вчера",
+                                        past: period => `Последние ${period}  дней`,
+                                        currentMonth: "Этот месяц",
+                                        pastMonth: "Прошлый месяц"
+                                    }
+                                }}
+                                primaryColor={"blue"}
+                                value={value}
+                                onChange={handleValueChange}
+                            />
+                        </div>
                         <div className="relative w-1/4">
                             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400"
@@ -73,11 +109,11 @@ const Index = () => {
                                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
                             </div>
-                            <input type="search" id="default-search"
-                                   className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                   placeholder="Search..." required/>
+                            <input type="search" id="default-search" value={searchText} onChange={handleSearchText}
+                                   className="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="Поиск..." required/>
                             <button type="submit"
-                                    className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    className="text-white absolute right-0.5 bottom-0.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Поиск
                             </button>
                         </div>
@@ -126,26 +162,32 @@ const Index = () => {
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-50">
                                     {data.data.map((mail, index) =>
-                                        (
-                                            <tr key={mail.id}
-                                                className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"} cursor-pointer hover:bg-slate-300`}>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.uuid}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
-                                                    <span
-                                                        className={"bg-orange-300 text-slate-950 px-4 py-2 rounded"}>Вне</span> :
-                                                    <span
-                                                        className={"bg-green-300 text-slate-950 px-4 py-2 rounded"}>Локальный</span>}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.from_user_name}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.id}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="/"
-                                                       className="text-indigo-600 hover:text-indigo-900">
-                                                        Edit
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        ))}
+                                        mail.document ?
+                                            (
+                                                <tr key={mail.id}
+                                                    className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"} cursor-pointer hover:bg-slate-300`}>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.uuid}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
+                                                        <span
+                                                            className={"bg-orange-300 text-slate-950 px-4 py-2 rounded"}>Вне</span> :
+                                                        <span
+                                                            className={"bg-green-300 text-slate-950 px-4 py-2 rounded"}>Локальный</span>}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.from_user_name}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.id}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="/"
+                                                           className="text-indigo-600 hover:text-indigo-900">
+                                                            Edit
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            )
+                                            :
+                                            <span>
+                                                NotFound
+                                            </span>
+                                    )}
                                     </tbody>
                                 </table>
                             </div>
