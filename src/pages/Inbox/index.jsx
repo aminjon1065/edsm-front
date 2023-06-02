@@ -67,9 +67,10 @@ const Index = () => {
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
     }
+    console.log(data.data.length <= 0)
     return (
         <div className="flex flex-col">
-            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 h-screen">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className='flex justify-start mb-5'>
                         <div>
@@ -106,15 +107,18 @@ const Index = () => {
                             />
                         </div>
                         <div className="relative w-1/4">
-                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div
+                                className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400"
                                      fill="none"
-                                     stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                     stroke="currentColor" viewBox="0 0 24 24"
+                                     xmlns="http://www.w3.org/2000/svg">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
                             </div>
-                            <input type="search" id="default-search" value={searchText} onChange={handleSearchText}
+                            <input type="search" id="default-search" value={searchText}
+                                   onChange={handleSearchText}
                                    className="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="Поиск..." required/>
                             <button type="button"
@@ -127,76 +131,79 @@ const Index = () => {
                     {
                         data.data.length > 0
                             ?
-                            <div className="shadow overflow-hidden border border-slate-500 sm:rounded-lg">
-                                <table className="min-w-full divide-y divide-gray-50">
-                                    <thead className="bg-slate-100">
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
-                                        >
-                                            ID Документа
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
-                                        >
-                                            От куда
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
-                                        >
-                                            ТИП
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
-                                        >
-                                            От
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
-                                        >
-                                            Role
-                                        </th>
-                                        <th scope="col" className="relative px-6 py-3">
-                                            <span className="sr-only">Edit</span>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-50">
-                                    {data.data.map((mail, index) =>
-                                        mail.document ?
-                                            (
-                                                <tr key={mail.id}
-                                                    className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"} cursor-pointer hover:bg-slate-300`}>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.uuid}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
-                                                        <span
-                                                            className={"bg-orange-300 text-slate-950 px-4 py-2 rounded"}>Вне</span> :
-                                                        <span
-                                                            className={"bg-green-300 text-slate-950 px-4 py-2 rounded"}>Локальный</span>}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.from_user_name}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.id}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <a href="/"
-                                                           className="text-indigo-600 hover:text-indigo-900">
-                                                            Edit
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            )
-                                            :
-                                            <span>
+                            <>
+
+                                <div className="shadow overflow-hidden border border-slate-500 sm:rounded-lg">
+                                    <table className="min-w-full divide-y divide-gray-50">
+                                        <thead className="bg-slate-100">
+                                        <tr>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                            >
+                                                ID Документа
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                            >
+                                                От куда
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                            >
+                                                ТИП
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                            >
+                                                От
+                                            </th>
+                                            <th
+                                                scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
+                                            >
+                                                Role
+                                            </th>
+                                            <th scope="col" className="relative px-6 py-3">
+                                                <span className="sr-only">Edit</span>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody className="bg-white divide-y divide-gray-50">
+                                        {data.data.map((mail, index) =>
+                                            mail.document ?
+                                                (
+                                                    <tr key={mail.id}
+                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"} cursor-pointer hover:bg-slate-300`}>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.uuid}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
+                                                            <span
+                                                                className={"bg-orange-300 text-slate-950 px-4 py-2 rounded"}>Вне</span> :
+                                                            <span
+                                                                className={"bg-green-300 text-slate-950 px-4 py-2 rounded"}>Локальный</span>}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.from_user_name}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.id}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                            <a href="/"
+                                                               className="text-indigo-600 hover:text-indigo-900">
+                                                                Edit
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                                :
+                                                <span>
                                                 NotFound
                                             </span>
-                                    )}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </>
                             :
                             <div className={""}>
                                 <span className={"font-bold"}>Писем  нет!</span>
