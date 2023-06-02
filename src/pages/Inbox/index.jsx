@@ -1,31 +1,36 @@
-import React, {Fragment, useEffect, useRef, useState} from 'react'
+import React, {useState} from 'react'
 import usePageTitle from "../../hooks/usePageTitle";
 import {useGetMessagesQuery} from "../../services/inbox.service";
 import Loader from "../../components/Loader";
 import {useSelector} from "react-redux";
 import Modal from "../../components/Modal";
 import {EnvelopeIcon} from "@heroicons/react/24/outline";
-import {ChevronDownIcon} from '@heroicons/react/20/solid'
-import {Menu, Transition} from "@headlessui/react";
 import Datepicker from "react-tailwindcss-datepicker";
 
 const Index = () => {
     usePageTitle("Входящие")
+    const [debouncedValue, setDebouncedValue] = useState('');
     const [open, setOpen] = useState(false)
     const [pageNum, setPageNum] = useState(1);
-    const {data = [], isLoading, error} = useGetMessagesQuery(pageNum);
+    const [searchText, setSearchText] = useState('')
+    const [queryText, setQueryText] = useState('')
+    const [dates, setDates] = useState({
+        startDate: '',
+        endDate: ''
+    });
+    const {data = [], isLoading, error} = useGetMessagesQuery({
+        page: pageNum,
+        searchQuery: searchText,
+        startDate: dates.startDate,
+        endDate: dates.endDate
+    });
     const [pageLinks, setPageLinks] = useState([]);
     const userSelector = useSelector(state => state.auth.user);
-    const [searchText, setSearchText] = useState('')
-    const [value, setValue] = useState({
-        startDate: new Date(),
-        endDate: new Date().setMonth(11)
-    });
+
     const handleValueChange = (newValue) => {
         console.log("newValue:", newValue);
-        setValue(newValue);
+        setDates(newValue);
     }
-
     const prevPage = () => {
         if (pageNum === 1) {
             setPageNum(1)
@@ -62,7 +67,6 @@ const Index = () => {
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
     }
-    console.log(searchText)
     return (
         <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -82,6 +86,7 @@ const Index = () => {
                     <div className='flex justify-end mb-5'>
                         <div className="relative w-1/4 mr-1">
                             <Datepicker
+                                separator={"до"}
                                 className={"bg-red-700"}
                                 i18n={"ru"}
                                 useRange
@@ -96,7 +101,7 @@ const Index = () => {
                                     }
                                 }}
                                 primaryColor={"blue"}
-                                value={value}
+                                value={dates}
                                 onChange={handleValueChange}
                             />
                         </div>
@@ -112,9 +117,10 @@ const Index = () => {
                             <input type="search" id="default-search" value={searchText} onChange={handleSearchText}
                                    className="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="Поиск..." required/>
-                            <button type="submit"
-                                    className="text-white absolute right-0.5 bottom-0.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                Поиск
+                            <button type="button"
+                                    onClick={() => setSearchText('')}
+                                    className="text-white absolute right-0.5 bottom-1 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                X
                             </button>
                         </div>
                     </div>
