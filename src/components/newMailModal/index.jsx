@@ -69,18 +69,20 @@ export default function Index({open, setOpen}) {
                                 className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg md:w-full md:max-w-4xl">
                                 <div className="bg-white  px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                     <div className="sm:flex sm:items-start md:block">
-                                        <div
-                                            className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-sky-100 sm:mx-0 sm:h-10 sm:w-10">
-                                            <EnvelopeIcon
-                                                className="h-6 w-6 text-sky-600"
-                                                aria-hidden="true"
-                                            />
-                                        </div>
-                                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                        <div className="flex flex-row items-center">
+                                            <div
+                                                className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-sky-100 sm:mx-0 sm:h-10 sm:w-10">
+                                                <EnvelopeIcon
+                                                    className="h-6 w-6 text-sky-600"
+                                                    aria-hidden="true"
+                                                />
+                                            </div>
                                             <Dialog.Title as="h3"
-                                                          className="text-base font-semibold leading-6 text-gray-900">
+                                                          className="text-base font-semibold leading-6 text-gray-900 ml-2">
                                                 Новое письмо
                                             </Dialog.Title>
+                                        </div>
+                                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                             <div className="mt-2">
                                                 <form className="space-y-8 divide-y divide-gray-200">
                                                     <div className="space-y-8 divide-y divide-gray-200">
