@@ -3,17 +3,15 @@ import usePageTitle from "../../hooks/usePageTitle";
 import {useGetMessagesQuery} from "../../services/inbox.service";
 import Loader from "../../components/Loader";
 import {useSelector} from "react-redux";
-import Modal from "../../components/Modal";
+import Modal from "../../components/newMailModal";
 import {EnvelopeIcon} from "@heroicons/react/24/outline";
 import Datepicker from "react-tailwindcss-datepicker";
 
 const Index = () => {
     usePageTitle("Входящие")
-    const [debouncedValue, setDebouncedValue] = useState('');
     const [open, setOpen] = useState(false)
     const [pageNum, setPageNum] = useState(1);
     const [searchText, setSearchText] = useState('')
-    const [queryText, setQueryText] = useState('')
     const [dates, setDates] = useState({
         startDate: '',
         endDate: ''
@@ -70,7 +68,7 @@ const Index = () => {
     console.log(data.data.length <= 0)
     return (
         <div className="flex flex-col">
-            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 h-screen">
+            <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className='flex justify-start mb-5'>
                         <div>
@@ -132,8 +130,7 @@ const Index = () => {
                         data.data.length > 0
                             ?
                             <>
-
-                                <div className="shadow overflow-hidden border border-slate-500 sm:rounded-lg">
+                                <div className="shadow overflow-hidden border border-indigo-700 sm:rounded-lg">
                                     <table className="min-w-full divide-y divide-gray-50">
                                         <thead className="bg-slate-100">
                                         <tr>

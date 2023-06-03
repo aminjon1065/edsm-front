@@ -7762,6 +7762,11 @@ react-error-overlay@^6.0.11:
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.11.tgz"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
+react-hook-form@^7.44.3:
+  version "7.44.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.44.3.tgz#a99e560c6ef2b668db1daaebc4f98267331b6828"
+  integrity sha512-/tHId6p2ViAka1wECMw8FEPn/oz/w226zehHrJyQ1oIzCBNMIJCaj6ZkQcv+MjDxYh9MWR7RQic7Qqwe4a5nkw==
+
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
@@ -8741,6 +8746,11 @@ symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
+
+tailwindcss-no-scrollbar@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tailwindcss-no-scrollbar/-/tailwindcss-no-scrollbar-1.0.1.tgz#e904053cd6f7a4c8884dea5b069eea9b8bfe63a6"
+  integrity sha512-6Jy3iFvlQ8hZ3TdM+c96GMk1hrPYZGxvUghIQvEGGzp6u2JP/iZGXMoOL3/R2Sb4VisUku0oz8NZ9MT4LTgu4w==
 
 tailwindcss@^3, tailwindcss@^3.0.2, tailwindcss@^3.3.2:
   version "3.3.2"

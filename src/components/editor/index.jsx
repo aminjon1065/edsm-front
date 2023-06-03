@@ -14,25 +14,30 @@ const Index = ({getContent}) => {
     const sendContent = () => {
         getContent(draftToHtml(convertToRaw(editorState?.getCurrentContent())));
     };
+    const [focused, setFocused] = useState(null);
     return (
         <>
-            <Editor
-                wrapperClassName={""}
-                editorState={editorState}
-                editorClassName={"h-36"}
-                toolbarClassName="bg-gray-200  border-gray-300 rounded-sm p-2"
-                toolbar={{
-                    options: [
-                        "history",
-                        "inline",
-                        "textAlign",
-                        "blockType",
-                        "fontSize",
-                        "list",
-                    ],
-                }}
-                onEditorStateChange={handleEditorChange}
-            />
+            <div className={`border-2 rounded-lg  ${focused ? 'border-indigo-600' : 'border-gray-300'}`}>
+                <Editor
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    editorState={editorState}
+                    editorClassName={"h-36 rounded-b-3xl pl-3 scrollbar-none"}
+                    toolbarClassName={"bg-gray-200  border-gray-300 rounded-lg"}
+                    toolbar={{
+                        options: [
+                            "history",
+                            "inline",
+                            "textAlign",
+                            "blockType",
+                            "fontSize",
+                            "list",
+                        ],
+                    }}
+                    onEditorStateChange={handleEditorChange}
+                />
+            </div>
+
             {/*<textarea value={draftToHtml(convertToRaw(text.getCurrentContent()))}></textarea>*/}
         </>
     );
