@@ -7,7 +7,7 @@ import api from "../../services/api";
 import Editor from "./../editor";
 
 export default function Index({open, setOpen}) {
-    const [option, setOption] = useState(null)
+    const [userSelected, setUserSelected] = useState(null)
     const [htmlContent, setHtmlContent] = useState("");
     const cancelButtonRef = useRef(null)
     const [usersList, setUsersList] = useState([]);
@@ -34,11 +34,19 @@ export default function Index({open, setOpen}) {
         })
     }
     const handleChange = (value) => {
-        console.log(value);
-        setOption(value);
+        setUserSelected(value);
     }
-    const {getRootProps, getInputProps, isDragActive} = useDropzone({noClick: false, onDrop})
-    console.log(files);
+    const {getRootProps, getInputProps,isDragActive} = useDropzone({
+        onDrop,
+        accept:
+            {
+                'application/pdf': ['.pdf'],
+                'application/msword':['.docx', '.doc'],
+                'application/vnd.ms-excel':['.xls', '.xlsx'],
+                'application/vnd.ms-powerpoint':['.pptx'],
+                'image/jpeg':['.jpeg', '.png', '.jpg'],
+            }
+    })
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -105,7 +113,7 @@ export default function Index({open, setOpen}) {
                                                                             searchInputPlaceholder={""}
                                                                             isSearchable
                                                                             isMultiple
-                                                                            value={option}
+                                                                            value={userSelected}
                                                                             onChange={handleChange}
                                                                             options={usersList}
                                                                             className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
@@ -202,6 +210,7 @@ export default function Index({open, setOpen}) {
                                                                         {...getRootProps()}
                                                                         className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${isDragActive ? 'bg-indigo-200' : ''}`}>
                                                                         <div className="space-y-1 text-center">
+                                                                            <input type="file" {...getInputProps()} className={"sr-only"}/>
                                                                             <svg
                                                                                 className="mx-auto h-12 w-12 text-gray-400"
                                                                                 stroke="currentColor"
@@ -250,7 +259,8 @@ export default function Index({open, setOpen}) {
                                                                                                     src={URL.createObjectURL(file)}
                                                                                                     alt={file.name}/>
                                                                                             ) : (
-                                                                                                <DocumentIcon className={"w-48 h-36"}/>
+                                                                                                <DocumentIcon
+                                                                                                    className={"w-48 h-36"}/>
                                                                                             )}
                                                                                             <p className={"truncate"}>{file.name}</p>
                                                                                         </div>

@@ -60,7 +60,7 @@ export const login = (email, password) => async (dispatch) => {
         });
         dispatch(loginSuccess(response.data));
     } catch (error) {
-        dispatch(loginFailure("Не правильный логин или пароль!"));
+        dispatch(loginFailure("Неправильный логин или пароль!"));
     }
 };
 
