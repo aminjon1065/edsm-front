@@ -1,17 +1,18 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import usePageTitle from "../../hooks/usePageTitle";
 import {useGetMessagesQuery} from "../../services/inbox.service";
 import Loader from "../../components/Loader";
 import {useSelector} from "react-redux";
 import Modal from "../../components/newMailModal";
-import {EnvelopeIcon} from "@heroicons/react/24/outline";
+import {ChevronLeftIcon, EnvelopeIcon} from "@heroicons/react/24/outline";
 import Datepicker from "react-tailwindcss-datepicker";
+import {ChevronRightIcon} from "@heroicons/react/24/solid";
 
 const Index = () => {
     usePageTitle("Входящие")
     const [open, setOpen] = useState(false)
     const [pageNum, setPageNum] = useState(1);
-    const [searchText, setSearchText] = useState('')
+    const [searchText, setSearchText] = useState('');
     const [dates, setDates] = useState({
         startDate: '',
         endDate: ''
@@ -65,7 +66,7 @@ const Index = () => {
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
     }
-    console.log(data.data.length <= 0)
+    console.log(data)
     return (
         <div className="flex flex-col">
             <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
@@ -82,50 +83,90 @@ const Index = () => {
                             <Modal open={open} setOpen={setOpen}/>
                         </div>
                     </div>
-                    <div className='flex justify-end mb-5'>
-                        <div className="relative w-1/4 mr-1">
-                            <Datepicker
-                                separator={"до"}
-                                className={"bg-red-700"}
-                                i18n={"ru"}
-                                useRange
-                                showShortcuts={true}
-                                configs={{
-                                    shortcuts: {
-                                        today: "Сегодня",
-                                        yesterday: "Вчера",
-                                        past: period => `Последние ${period}  дней`,
-                                        currentMonth: "Этот месяц",
-                                        pastMonth: "Прошлый месяц"
-                                    }
-                                }}
-                                primaryColor={"blue"}
-                                value={dates}
-                                onChange={handleValueChange}
-                            />
+                    {
+                        data.to
+                            ?
+                            <span>{data.to} из {data.total}</span>
+                            :
+                            null
+                    }
+                    <div className={"flex flex-row items-center justify-between mb-3"}>
+                        <div className={"flex justify-start"}>
+                            <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm bg-indigo-700"
+                                 aria-label="Pagination"
+                            >
+
+                                        <button
+                                            disabled={data.prev_page_url ? false : true}
+                                            onClick={prevPage}
+                                            className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+                                        >
+                                            <ChevronLeftIcon className="h-5 w-5" aria-hidden="true"/>
+                                        </button>
+
+                                {
+                                    data.next_page_url
+                                        ?
+                                        <>
+                                            <button
+                                                onClick={nextPage}
+                                                className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                                            >
+                                                <span className="sr-only">Next</span>
+                                                <ChevronRightIcon className="h-5 w-5" aria-hidden="true"/>
+                                            </button>
+                                        </>
+                                        :
+                                        null
+                                }
+                            </nav>
                         </div>
-                        <div className="relative w-1/4">
-                            <div
-                                className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                     fill="none"
-                                     stroke="currentColor" viewBox="0 0 24 24"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
+                        <div className='flex justify-end'>
+                            <div className="relative mr-1">
+                                <Datepicker
+                                    separator={"до"}
+                                    className={"bg-red-700"}
+                                    i18n={"ru"}
+                                    useRange
+                                    showShortcuts={true}
+                                    configs={{
+                                        shortcuts: {
+                                            today: "Сегодня",
+                                            yesterday: "Вчера",
+                                            past: period => `Последние ${period}  дней`,
+                                            currentMonth: "Этот месяц",
+                                            pastMonth: "Прошлый месяц"
+                                        }
+                                    }}
+                                    primaryColor={"blue"}
+                                    value={dates}
+                                    onChange={handleValueChange}
+                                />
                             </div>
-                            <input type="search" id="default-search" value={searchText}
-                                   onChange={handleSearchText}
-                                   className="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                   placeholder="Поиск..." required/>
-                            <button type="button"
-                                    onClick={() => setSearchText('')}
-                                    className="text-white absolute right-0.5 bottom-1 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                X
-                            </button>
+                            <div className="relative">
+                                <div
+                                    className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                         fill="none"
+                                         stroke="currentColor" viewBox="0 0 24 24"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input type="search" id="default-search" value={searchText}
+                                       onChange={handleSearchText}
+                                       className="block w-full p-2.5 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                       placeholder="Поиск..." required/>
+                                <button type="button"
+                                        onClick={() => setSearchText('')}
+                                        className="text-white absolute right-0.5 bottom-1 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    X
+                                </button>
+                            </div>
                         </div>
                     </div>
+
                     {
                         data.data.length > 0
                             ?

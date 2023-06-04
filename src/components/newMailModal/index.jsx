@@ -7,46 +7,56 @@ import api from "../../services/api";
 import Editor from "./../editor";
 
 export default function Index({open, setOpen}) {
-    const [userSelected, setUserSelected] = useState(null)
+    // Локальные состояния
+    const [userSelected, setUserSelected] = useState(null);
     const [htmlContent, setHtmlContent] = useState("");
-    const cancelButtonRef = useRef(null)
+    const cancelButtonRef = useRef(null);
     const [usersList, setUsersList] = useState([]);
     const [files, setFiles] = useState([]);
+    // Запрос на получение пользователей при монтировании компонента
     useEffect(() => {
-        fetchUsers()
+        fetchUsers();
     }, []);
+    // Получение контента редактора
     const getContent = (htmlContentProp) => {
         setHtmlContent(htmlContentProp);
-        console.log(htmlContent)
+        console.log(htmlContent);
     };
+
+    // Функция обработки загрузки файлов
     const onDrop = useCallback((acceptedFiles) => {
         setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
     }, []);
 
+    // Функция удаления файла
     const removeFile = (fileIndex) => {
         setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
     };
+    // Функция получения списка пользователей
     const fetchUsers = async () => {
-        api.get('/users').then((response) => {
-            setUsersList(response.data)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
+        try {
+            const response = await api.get('/users');
+            setUsersList(response.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // Обработчик изменения значения выбранных пользователей
     const handleChange = (value) => {
         setUserSelected(value);
-    }
-    const {getRootProps, getInputProps,isDragActive} = useDropzone({
+    };
+    // Использование React Dropzone хука
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({
         onDrop,
-        accept:
-            {
-                'application/pdf': ['.pdf'],
-                'application/msword':['.docx', '.doc'],
-                'application/vnd.ms-excel':['.xls', '.xlsx'],
-                'application/vnd.ms-powerpoint':['.pptx'],
-                'image/jpeg':['.jpeg', '.png', '.jpg'],
-            }
-    })
+        accept: {
+            'application/pdf': ['.pdf'],
+            'application/msword': ['.docx', '.doc'],
+            'application/vnd.ms-excel': ['.xls', '.xlsx'],
+            'application/vnd.ms-powerpoint': ['.pptx'],
+            'image/jpeg': ['.jpeg', '.png', '.jpg'],
+        }
+    });
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -210,7 +220,8 @@ export default function Index({open, setOpen}) {
                                                                         {...getRootProps()}
                                                                         className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md ${isDragActive ? 'bg-indigo-200' : ''}`}>
                                                                         <div className="space-y-1 text-center">
-                                                                            <input type="file" {...getInputProps()} className={"sr-only"}/>
+                                                                            <input type="file" {...getInputProps()}
+                                                                                   className={"sr-only"}/>
                                                                             <svg
                                                                                 className="mx-auto h-12 w-12 text-gray-400"
                                                                                 stroke="currentColor"
