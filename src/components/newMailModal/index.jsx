@@ -5,7 +5,6 @@ import Select from "react-tailwindcss-select";
 import {useDropzone} from 'react-dropzone'
 import api from "../../services/api";
 import Editor from "./../editor";
-import Loader from "../Loader";
 
 export default function Index({open, setOpen}) {
     // Локальные состояния
@@ -13,7 +12,6 @@ export default function Index({open, setOpen}) {
     const [htmlContent, setHtmlContent] = useState("");
     const [title, setTitle] = useState("")
     const [importance, setImportance] = useState(false)
-
     const cancelButtonRef = useRef(null);
     const [usersList, setUsersList] = useState([]);
     const [files, setFiles] = useState([]);
@@ -71,7 +69,7 @@ export default function Index({open, setOpen}) {
         const formData = new FormData();
         formData.append('title_document', title);
         formData.append('content', htmlContent);
-        formData.append('importance', importance ? 1 : 0);
+        formData.append('importance', importance ? '1' : '0');
         if (userSelected.length > 0) {
             for (let i = 0; i < userSelected.length; i++) {
                 formData.append('to[]', userSelected[i].value);
@@ -88,8 +86,18 @@ export default function Index({open, setOpen}) {
                 'Content-Type': 'multipart/form-data',
             },
         }).then((response) => {
+            setUserSelected(null);
+            setHtmlContent('');
+            setTitle('')
+            setImportance(false)
+            setFiles([])
             console.log(response)
         }).catch((error) => {
+            setUserSelected(null);
+            setHtmlContent('');
+            setTitle('')
+            setImportance(false)
+            setFiles([])
             console.log(error)
         })
     }
