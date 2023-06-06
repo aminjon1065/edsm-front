@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import usePageTitle from "../../hooks/usePageTitle";
 import {useGetMessagesQuery} from "../../services/inbox.service";
 import Loader from "../../components/Loader";
-import {useSelector} from "react-redux";
 import Modal from "../../components/newMailModal";
 import {ChevronLeftIcon, EnvelopeIcon} from "@heroicons/react/24/outline";
 import Datepicker from "react-tailwindcss-datepicker";
@@ -26,9 +25,6 @@ const Index = () => {
         startDate: dates.startDate,
         endDate: dates.endDate
     });
-    const [pageLinks, setPageLinks] = useState([]);
-    const userSelector = useSelector(state => state.auth.user);
-
     const handleValueChange = (newValue) => {
         setDates(newValue);
     }
@@ -50,7 +46,6 @@ const Index = () => {
     const lastPage = () => {
         setPageNum(data.last_page)
     }
-
     const firstPage = () => {
         setPageNum(1)
     }
@@ -68,9 +63,9 @@ const Index = () => {
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
     }
-const showMailItem = (id)=>{
+    const showMailItem = (id) => {
         navigate(`/inbox/${id}`)
-}
+    }
     return (
         <div className="flex flex-col">
             <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
@@ -84,7 +79,7 @@ const showMailItem = (id)=>{
                                     aria-hidden="true"/>
                                 Новое письмо
                             </button>
-                            <Modal open={open} setOpen={setOpen} />
+                            <Modal open={open} setOpen={setOpen}/>
                         </div>
                     </div>
                     {
