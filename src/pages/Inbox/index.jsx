@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import usePageTitle from "../../hooks/usePageTitle";
 import {useGetMessagesQuery} from "../../services/inbox.service";
 import Loader from "../../components/Loader";
@@ -7,9 +7,11 @@ import Modal from "../../components/newMailModal";
 import {ChevronLeftIcon, EnvelopeIcon} from "@heroicons/react/24/outline";
 import Datepicker from "react-tailwindcss-datepicker";
 import {ChevronRightIcon} from "@heroicons/react/24/solid";
+import {useNavigate} from "react-router-dom";
 
 const Index = () => {
-    usePageTitle("Входящие")
+    usePageTitle("Входящие");
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false)
     const [pageNum, setPageNum] = useState(1);
     const [searchText, setSearchText] = useState('');
@@ -17,6 +19,7 @@ const Index = () => {
         startDate: '',
         endDate: ''
     });
+
     const {data = [], isLoading, error} = useGetMessagesQuery({
         page: pageNum,
         searchQuery: searchText,
@@ -27,7 +30,6 @@ const Index = () => {
     const userSelector = useSelector(state => state.auth.user);
 
     const handleValueChange = (newValue) => {
-        console.log("newValue:", newValue);
         setDates(newValue);
     }
     const prevPage = () => {
@@ -66,7 +68,9 @@ const Index = () => {
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
     }
-    console.log(data)
+const showMailItem = (id)=>{
+        navigate(`/inbox/${id}`)
+}
     return (
         <div className="flex flex-col">
             <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
@@ -80,7 +84,7 @@ const Index = () => {
                                     aria-hidden="true"/>
                                 Новое письмо
                             </button>
-                            <Modal open={open} setOpen={setOpen}/>
+                            <Modal open={open} setOpen={setOpen} />
                         </div>
                     </div>
                     {
@@ -96,13 +100,13 @@ const Index = () => {
                                  aria-label="Pagination"
                             >
 
-                                        <button
-                                            disabled={data.prev_page_url ? false : true}
-                                            onClick={prevPage}
-                                            className={`relative bg-gray-100 inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
-                                        >
-                                            <ChevronLeftIcon className="h-5 w-5" aria-hidden="true"/>
-                                        </button>
+                                <button
+                                    disabled={data.prev_page_url ? false : true}
+                                    onClick={prevPage}
+                                    className={`relative bg-gray-100 inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
+                                >
+                                    <ChevronLeftIcon className="h-5 w-5" aria-hidden="true"/>
+                                </button>
 
                                 {
                                     data.next_page_url
@@ -179,7 +183,7 @@ const Index = () => {
                                                 scope="col"
                                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider"
                                             >
-                                                ID Документа
+                                                ID
                                             </th>
                                             <th
                                                 scope="col"
@@ -215,8 +219,12 @@ const Index = () => {
                                             mail.document ?
                                                 (
                                                     <tr key={mail.id}
-                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"} cursor-pointer hover:bg-slate-300`}>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.uuid}</td>
+                                                        onClick={() => showMailItem(mail.id)}
+                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"} hover:bg-slate-300 cursor-pointer`}>
+                                                        <td className=" px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+
+                                                            {mail.id}
+                                                        </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}</td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
                                                             <span
@@ -235,8 +243,8 @@ const Index = () => {
                                                 )
                                                 :
                                                 <span>
-                                                NotFound
-                                            </span>
+                                                        NotFound
+                                                    </span>
                                         )}
                                         </tbody>
                                     </table>

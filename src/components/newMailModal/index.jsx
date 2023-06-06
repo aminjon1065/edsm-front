@@ -6,7 +6,7 @@ import {useDropzone} from 'react-dropzone'
 import api from "../../services/api";
 import Editor from "./../editor";
 
-export default function Index({open, setOpen}) {
+export default function Index({open, setOpen,}) {
     // Локальные состояния
     const [userSelected, setUserSelected] = useState(null);
     const [htmlContent, setHtmlContent] = useState("");
@@ -16,13 +16,12 @@ export default function Index({open, setOpen}) {
     const [usersList, setUsersList] = useState([]);
     const [files, setFiles] = useState([]);
     // Запрос на получение пользователей при монтировании компонента
-    useEffect(() => {
+    useEffect( () => {
         fetchUsers();
     }, []);
     // Получение контента редактора
     const getContent = (htmlContentProp) => {
         setHtmlContent(htmlContentProp);
-        console.log(htmlContent);
     };
 
     // Функция обработки загрузки файлов
@@ -101,7 +100,6 @@ export default function Index({open, setOpen}) {
             console.log(error)
         })
     }
-    console.log(userSelected)
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -355,8 +353,9 @@ export default function Index({open, setOpen}) {
                                         </div>
                                         <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                             <button
+                                                disabled={!userSelected || !title}
                                                 type="button"
-                                                className="inline-flex w-full justify-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 sm:ml-3 sm:w-auto"
+                                                className="disabled:bg-gray-300 inline-flex w-full justify-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 sm:ml-3 sm:w-auto"
                                                 onClick={sendMailFN}
                                             >
                                                 Отправить
