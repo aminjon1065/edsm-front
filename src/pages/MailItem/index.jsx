@@ -28,6 +28,9 @@ const Index = () => {
                         <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Регион: <strong
                             className={"text-gray-900"}>{data.document.region}</strong>
                         </p>
+                        <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Управление: <strong
+                            className={"text-gray-900"}>{data.document.department}</strong>
+                        </p>
                     </div>
                     <div className="mt-6 border-t border-gray-100">
                         <dl className="divide-y divide-gray-100">
@@ -49,40 +52,44 @@ const Index = () => {
                                 <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                                     <ul role="list"
                                         className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                                        <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                            <div className="flex w-0 flex-1 items-center">
-                                                <PaperClipIcon className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                                               aria-hidden="true"/>
-                                                <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                                                <span
-                                                    className="truncate font-medium">resume_back_end_developer.pdf</span>
-                                                    <span className="flex-shrink-0 text-gray-400">2.4mb</span>
-                                                </div>
-                                            </div>
-                                            <div className="ml-4 flex-shrink-0">
-                                                <a href="/"
-                                                   className="font-medium text-indigo-600 hover:text-indigo-500">
-                                                    Download
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                            <div className="flex w-0 flex-1 items-center">
-                                                <PaperClipIcon className="h-5 w-5 flex-shrink-0 text-gray-400"
-                                                               aria-hidden="true"/>
-                                                <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                                                <span
-                                                    className="truncate font-medium">coverletter_back_end_developer.pdf</span>
-                                                    <span className="flex-shrink-0 text-gray-400">4.5mb</span>
-                                                </div>
-                                            </div>
-                                            <div className="ml-4 flex-shrink-0">
-                                                <a href="/"
-                                                   className="font-medium text-indigo-600 hover:text-indigo-500">
-                                                    Download
-                                                </a>
-                                            </div>
-                                        </li>
+                                        {
+                                            data.document.file.length > 0
+                                                ?
+                                                data.document.file.map((item, index) => (
+                                                    <li key={item.id}
+                                                        className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                                        <div className="flex w-0 flex-1 items-center">
+                                                            <PaperClipIcon
+                                                                className="h-5 w-5 flex-shrink-0 text-gray-400"
+                                                                aria-hidden="true"
+                                                            />
+                                                            <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                                                                <span
+                                                                    className="truncate
+                                                                    font-medium"
+                                                                >
+                                                                    {item.name_file}
+                                                                </span>
+                                                                <span
+                                                                    className="flex-shrink-0 text-gray-400"
+                                                                >
+                                                                    2.4mb
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="ml-4 flex-shrink-0">
+                                                            <a
+                                                                href={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
+                                                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                            >
+                                                                Download
+                                                            </a>
+                                                        </div>
+                                                    </li>
+                                                ))
+                                                :
+                                                <span>Empty</span>
+                                        }
                                     </ul>
                                 </dd>
                             </div>
@@ -92,18 +99,6 @@ const Index = () => {
                 <div className={"ml-5"}>
                     <span>activity</span>
                 </div>
-            </div>
-            <div className="">
-                {
-                    data.document.file.length > 0
-                        ?
-                        data.document.file.map((item, index) => (
-                            <a key={item.id}
-                               href={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}>{item.name_file}</a>
-                        ))
-                        :
-                        <span>Empty</span>
-                }
             </div>
         </>
     );

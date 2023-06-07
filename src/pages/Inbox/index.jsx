@@ -216,7 +216,7 @@ const Index = () => {
                                                 (
                                                     <tr key={mail.id}
                                                         onClick={() => showMailItem(mail.uuid)}
-                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}>
+                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-100" : "bg-white"}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}>
                                                         <td className=" px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                             {mail.id}
                                                         </td>
