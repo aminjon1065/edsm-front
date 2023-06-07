@@ -63,9 +63,10 @@ const Index = () => {
     const handleSearchText = (event) => {
         setSearchText(event.target.value)
     }
-    const showMailItem = (id) => {
-        navigate(`/inbox/${id}`)
+    const showMailItem = (uuid) => {
+        navigate(`/inbox/${uuid}`)
     }
+
     return (
         <div className="flex flex-col">
             <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
@@ -214,10 +215,9 @@ const Index = () => {
                                             mail.document ?
                                                 (
                                                     <tr key={mail.id}
-                                                        onClick={() => showMailItem(mail.id)}
-                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"} hover:bg-slate-300 cursor-pointer`}>
+                                                        onClick={() => showMailItem(mail.uuid)}
+                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-200" : "bg-slate-50"}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}>
                                                         <td className=" px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-
                                                             {mail.id}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}</td>

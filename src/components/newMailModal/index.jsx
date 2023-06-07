@@ -16,7 +16,7 @@ export default function Index({open, setOpen,}) {
     const [usersList, setUsersList] = useState([]);
     const [files, setFiles] = useState([]);
     // Запрос на получение пользователей при монтировании компонента
-    useEffect( () => {
+    useEffect(() => {
         fetchUsers();
     }, []);
     // Получение контента редактора
