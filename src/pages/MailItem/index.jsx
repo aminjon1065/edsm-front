@@ -4,22 +4,36 @@ import {useGetInboxByIdQuery} from "../../services/show.mail.service";
 import LoaderMail from "../../components/LoaderMail";
 import {PaperClipIcon} from '@heroicons/react/20/solid';
 import {PUBLIC_APP_URL_DOCUMENTS} from "../../helper/CONSTANTS";
-import logo from './../../assets/images/logo.png';
 import {UserIcon} from "@heroicons/react/20/solid";
+import {useSelector} from "react-redux";
+import api from "../../services/api";
 
 const Index = () => {
     const location = useLocation();
+    const selector = useSelector(state => state.auth.user);
     // Используем метод match для поиска совпадений
     const mailId = location.pathname.replace(/\/inbox\//, "");
-    console.log(mailId)
     const {data, isLoading, isError} = useGetInboxByIdQuery(mailId);
-    console.log(data)
+    const openedMail = (id) => {
+        api.post(`/showed/${id}`).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     if (isLoading) {
         return <div className={"min-h-screen flex items-center justify-center"}><LoaderMail/></div>
     }
     if (isError) {
         return <span>Error!</span>
     }
+
+    if (data) {
+        if (data.opened_mail[0].opened === 0) {
+            openedMail(data.opened_mail[0].id)
+        }
+    }
+    console.log(data)
     return (
         <>
             <div className="flex flex-row">
@@ -120,16 +134,17 @@ const Index = () => {
                                 <UserIcon className="w-5 h-5" aria-hidden="true"/>
                               </span>
                                                 </div>
-                                                <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                                <div
+                                                    className={`min-w-0 flex-1 px-4 py-2 rounded pt-1.5 flex justify-between space-x-4  text-gray-500 ${item.recipient.id === selector.id ? 'bg-orange-500 text-slate-950' : null}`}>
                                                     <div>
-                                                        <p className="text-sm text-gray-500">
+                                                        <p className="text-sm">
                                                             {item.recipient.full_name}
                                                         </p>
-                                                        <p className="text-sm text-gray-500">
+                                                        <p className="text-sm">
                                                             {item.status}
                                                         </p>
                                                     </div>
-                                                    <div className="text-right text-sm whitespace-nowrap text-gray-500">
+                                                    <div className="text-right text-sm whitespace-nowrap">
                                                         <time dateTime={item.created_at}>{item.created_at}</time>
                                                     </div>
                                                 </div>
@@ -141,6 +156,29 @@ const Index = () => {
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div>
+                {
+                    data.document.file.length > 0
+                        ?
+                        data.document.file.map((item, index) => (
+                            (item.extension_file === 'jpg'
+                                    ?
+                                    <li key={item.id}
+                                        className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                        <div className="ml-4 flex-shrink-0">
+                                            <img
+                                                src={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
+                                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                                            />
+                                        </div>
+                                    </li>
+                                    :
+                                    null
+                            )))
+                        :
+                        <span>Empty</span>
+                }
             </div>
         </>
     );

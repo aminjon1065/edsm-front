@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {API_APP} from "../helper/CONSTANTS";
 
 // Создаем экземпляр API
@@ -20,4 +20,4 @@ export const inboxApiById = createApi({
 });
 
 // Экспортируем хук использования запроса
-export const { useGetInboxByIdQuery } = inboxApiById;
+export const {useGetInboxByIdQuery} = inboxApiById;
