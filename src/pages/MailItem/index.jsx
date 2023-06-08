@@ -4,6 +4,8 @@ import {useGetInboxByIdQuery} from "../../services/show.mail.service";
 import LoaderMail from "../../components/LoaderMail";
 import {PaperClipIcon} from '@heroicons/react/20/solid';
 import {PUBLIC_APP_URL_DOCUMENTS} from "../../helper/CONSTANTS";
+import logo from './../../assets/images/logo.png';
+import {UserIcon} from "@heroicons/react/20/solid";
 
 const Index = () => {
     const location = useLocation();
@@ -80,6 +82,7 @@ const Index = () => {
                                                         <div className="ml-4 flex-shrink-0">
                                                             <a
                                                                 href={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
+                                                                download
                                                                 className="font-medium text-indigo-600 hover:text-indigo-500"
                                                             >
                                                                 Download
@@ -97,7 +100,46 @@ const Index = () => {
                     </div>
                 </div>
                 <div className={"ml-5"}>
-                    <span>activity</span>
+                    <div className="mt-6 flow-root">
+                        <ul role="list" className="-mb-8">
+                            {
+                                data.document.history.map((item, Idx) => (
+                                    <li key={item.id}>
+                                        <div className="relative pb-8">
+                                            {Idx !== data.document.history.length - 1 ? (
+                                                <span
+                                                    className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                                                    aria-hidden="true"
+                                                />
+                                            ) : null}
+                                            <div className="relative flex space-x-3">
+                                                <div>
+                              <span
+                                  className={'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'}
+                              >
+                                <UserIcon className="w-5 h-5" aria-hidden="true"/>
+                              </span>
+                                                </div>
+                                                <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                                    <div>
+                                                        <p className="text-sm text-gray-500">
+                                                            {item.recipient.full_name}
+                                                        </p>
+                                                        <p className="text-sm text-gray-500">
+                                                            {item.status}
+                                                        </p>
+                                                    </div>
+                                                    <div className="text-right text-sm whitespace-nowrap text-gray-500">
+                                                        <time dateTime={item.created_at}>{item.created_at}</time>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </>
