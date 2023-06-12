@@ -5,6 +5,7 @@ import Select from "react-tailwindcss-select";
 import {useDropzone} from 'react-dropzone'
 import api from "../../services/api";
 import Editor from "./../editor";
+import {fetchUsers} from "../../services/fetchUsers.service";
 
 export default function Index({open, setOpen,}) {
     // Локальные состояния
@@ -17,7 +18,9 @@ export default function Index({open, setOpen,}) {
     const [files, setFiles] = useState([]);
     // Запрос на получение пользователей при монтировании компонента
     useEffect(() => {
-        fetchUsers();
+        fetchUsers().then((res) => {
+            setUsersList(res.data)
+        });
     }, []);
     // Получение контента редактора
     const getContent = (htmlContentProp) => {
@@ -34,14 +37,7 @@ export default function Index({open, setOpen,}) {
         setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
     };
     // Функция получения списка пользователей
-    const fetchUsers = async () => {
-        try {
-            const response = await api.get('/users');
-            setUsersList(response.data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+
     const handleChangeTitle = (e) => {
         setTitle(e.target.value)
     }
