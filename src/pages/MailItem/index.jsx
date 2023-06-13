@@ -12,7 +12,7 @@ import {fetchUsers} from "../../services/fetchUsers.service";
 
 const Index = () => {
     const location = useLocation();
-    const selector = useSelector(state => state.auth.user);
+    const me = useSelector(state => state.auth.user);
     const [showRedirectMail, setShowRedirectMail] = useState(false);
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
@@ -103,7 +103,7 @@ const Index = () => {
                                                                     <span
                                                                         className="flex-shrink-0 text-gray-400"
                                                                     >
-                                                                    2.4mb
+                                                                    {item.size}мб
                                                                 </span>
                                                                 </div>
                                                             </div>
@@ -129,6 +129,11 @@ const Index = () => {
                     </div>
                     <div className={"ml-5"}>
                         <div className="mt-6 flow-root">
+                            <div className={"mb-5"}>
+                                <span>
+                                    Исполнители
+                                </span>
+                            </div>
                             <ul className="-mb-8">
                                 {
                                     data.document.history.map((item, Idx) => (
@@ -142,14 +147,14 @@ const Index = () => {
                                                 ) : null}
                                                 <div className="relative flex space-x-3">
                                                     <div>
-                              <span
-                                  className={'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'}
-                              >
-                                <UserIcon className="w-5 h-5" aria-hidden="true"/>
-                              </span>
+                                                      <span
+                                                          className={'h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white'}
+                                                      >
+                                                        <UserIcon className="w-5 h-5" aria-hidden="true"/>
+                                                      </span>
                                                     </div>
                                                     <div
-                                                        className={`min-w-0 flex-1 px-4 py-2 rounded pt-1.5 flex justify-between space-x-4  text-gray-500 ${item.recipient.id === selector.id ? 'bg-orange-500 text-slate-950' : null}`}>
+                                                        className={`min-w-0 flex-1 px-4 py-2 rounded pt-1.5 flex justify-between space-x-4  text-gray-500 ${item.recipient.id === me.id ? 'bg-orange-500 text-slate-950' : null}`}>
                                                         <div>
                                                             <p className="text-sm">
                                                                 {item.recipient.full_name}
@@ -169,6 +174,34 @@ const Index = () => {
                                 }
                             </ul>
                         </div>
+                        {
+                            me.id === 2
+                                ?
+                                <div className={"mt-5 border p-3 rounded bg-slate-100"}>
+                                    <div className="container mb-5">
+                                        <Select
+                                            id={"username"}
+                                            primaryColor={"indigo"}
+                                            noOptionsMessage={"Такого пользователя не существует"}
+                                            searchInputPlaceholder={""}
+                                            isSearchable
+                                            isMultiple
+                                            value={userSelected}
+                                            onChange={handleChange}
+                                            options={usersList}
+                                            className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                        />
+                                    </div>
+                                    <button
+                                        onClick={() => setShowRedirectMail(prevState => !prevState)}
+                                        className={"bg-gray-800 text-white px-4 py-2 rounded hover:bg-slate-700"}
+                                    >
+                                        Перенаправить
+                                    </button>
+                                </div>
+                                :
+                                null
+                        }
                     </div>
                 </div>
                 <div>
@@ -184,7 +217,7 @@ const Index = () => {
                                                 <img
                                                     src={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
                                                     alt={item.name_file}
-                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                    className="font-medium text-indigo-600 hover:text-indigo-500 w-96"
                                                 />
                                             </div>
                                         </li>
@@ -195,33 +228,7 @@ const Index = () => {
                             <span>Empty</span>
                     }
                 </div>
-                <div>
-                    <button
-                        onClick={() => setShowRedirectMail(prevState => !prevState)}
-                        className={"bg-gray-800 text-white"}
-                    >
-                        Перенаправить
-                    </button>
-                    {
-                        showRedirectMail
-                            ?
-                            <Select
-                                id={"username"}
-                                primaryColor={"indigo"}
-                                noOptionsMessage={"Такого пользователя не существует"}
-                                searchInputPlaceholder={""}
-                                isSearchable
-                                isMultiple
-                                value={userSelected}
-                                onChange={handleChange}
-                                options={usersList}
-                                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                            />
-                            :
-                            null
-                    }
 
-                </div>
             </div>
         </>
     );
