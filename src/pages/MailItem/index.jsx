@@ -49,8 +49,8 @@ const Index = () => {
     return (
         <>
             <div>
-                <div className="flex flex-row">
-                    <div>
+                <div className="flex flex-row justify-between">
+                    <div className={"w-10/12"}>
                         <div className="px-4 sm:px-0">
                             <h3 className="text-base leading-7 text-gray-500">Отправитель: <strong
                                 className={"text-gray-900"}>{data.from_user_name}</strong></h3>
@@ -71,10 +71,7 @@ const Index = () => {
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                                     <dt className="text-sm font-medium leading-6 text-gray-900">About</dt>
                                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                                        тут должна быть тело документа Lorem ipsum dolor sit amet, consectetur
-                                        adipisicing
-                                        elit.
-                                        Porro, temporibus.
+                                        <div dangerouslySetInnerHTML={{__html: data.document.content}}></div>
                                     </dd>
                                 </div>
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -175,7 +172,7 @@ const Index = () => {
                             </ul>
                         </div>
                         {
-                            me.id === 2
+                            me.id === 1
                                 ?
                                 <div className={"mt-5 border p-3 rounded bg-slate-100"}>
                                     <div className="container mb-5">
