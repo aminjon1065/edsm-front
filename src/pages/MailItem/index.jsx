@@ -9,6 +9,7 @@ import {useSelector} from "react-redux";
 import api from "../../services/api";
 import Select from "react-tailwindcss-select";
 import {fetchUsers} from "../../services/fetchUsers.service";
+import PdfViewer from "../../components/pdfViewer";
 
 const Index = () => {
     const location = useLocation();
@@ -219,7 +220,12 @@ const Index = () => {
                                             </div>
                                         </li>
                                         :
-                                        null
+                                        <li key={item.id}
+                                            className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                            <PdfViewer
+                                                pdfFile={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
+                                            />
+                                        </li>
                                 )))
                             :
                             <span>Empty</span>

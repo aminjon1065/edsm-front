@@ -66,7 +66,7 @@ const Index = () => {
     const showMailItem = (uuid) => {
         navigate(`/inbox/${uuid}`)
     }
-
+    console.log(data)
     return (
         <div className="flex flex-col">
             <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
@@ -216,17 +216,17 @@ const Index = () => {
                                                 (
                                                     <tr key={mail.id}
                                                         onClick={() => showMailItem(mail.uuid)}
-                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-100" : "bg-white"}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}>
+                                                        className={`${mail?.opened_mail[0]?.opened ? "bg-slate-100" : `${mail.document.importance ? 'bg-red-400' : 'bg-white'}`}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}>
                                                         <td className=" px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                             {mail.id}
                                                         </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}({mail.from_user_name})</td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
                                                             <span
                                                                 className={"bg-orange-300 text-slate-950 px-4 py-2 rounded"}>Вне</span> :
                                                             <span
-                                                                className={"bg-green-300 text-slate-950 px-4 py-2 rounded"}>Локальный</span>}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.from_user_name}</td>
+                                                                className={"bg-green-300 text-slate-950 px-4 py-2 rounded"}>{mail.document.type}</span>}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{mail.document.status}</td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.id}</td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                             <a href="/"

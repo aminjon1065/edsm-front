@@ -11,6 +11,7 @@ export default function Index({open, setOpen,}) {
     // Локальные состояния
     const [userSelected, setUserSelected] = useState(null);
     const [htmlContent, setHtmlContent] = useState("");
+    const [type, setType] = useState("");
     const [title, setTitle] = useState("")
     const [importance, setImportance] = useState(false)
     const cancelButtonRef = useRef(null);
@@ -41,6 +42,10 @@ export default function Index({open, setOpen,}) {
     const handleChangeTitle = (e) => {
         setTitle(e.target.value)
     }
+    const handleChangeType = (e) => {
+        setType(e.target.value)
+    }
+
     const handleChangeImportance = (e) => {
         setImportance(!importance)
     }
@@ -63,6 +68,7 @@ export default function Index({open, setOpen,}) {
     const sendMailFN = async () => {
         const formData = new FormData();
         formData.append('title_document', title);
+        formData.append('type', type);
         formData.append('content', htmlContent);
         formData.append('importance', importance ? '1' : '0');
         if (userSelected.length > 0) {
@@ -227,16 +233,36 @@ export default function Index({open, setOpen,}) {
                                                                                         className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                                                                                     />
                                                                                 </div>
-                                                                                <div className="ml-3 text-sm">
-                                                                                    <label htmlFor="importance"
-                                                                                           className="font-medium text-gray-700">
-                                                                                        Председателю
-                                                                                    </label>
-                                                                                    <p className="text-gray-500">
-                                                                                        Если документ хотите
-                                                                                        передать
-                                                                                        председателю
-                                                                                    </p>
+                                                                                <div className="container flex flex-row">
+                                                                                    <div className="ml-3 text-sm">
+                                                                                        <label htmlFor="importance"
+                                                                                               className="font-medium text-gray-700">
+                                                                                            Председателю
+                                                                                        </label>
+                                                                                        <p className="text-gray-500">
+                                                                                            Если документ хотите
+                                                                                            передать
+                                                                                            председателю
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div className="w-full">
+                                                                                        <label htmlFor="type"
+                                                                                               className="block text-sm font-medium text-gray-700">
+                                                                                            Тип документа
+                                                                                            <sup
+                                                                                                className={"text-red-500 font-bold"}>*</sup>
+                                                                                        </label>
+                                                                                        <div
+                                                                                            className="mt-1 rounded-md shadow-sm">
+                                                                                            <input
+                                                                                                value={type}
+                                                                                                onChange={handleChangeType}
+                                                                                                type="text"
+                                                                                                id={"type"}
+                                                                                                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                                                                            />
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                             {/*<label htmlFor="photo"*/}
