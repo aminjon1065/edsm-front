@@ -17,6 +17,7 @@ const Index = () => {
     const [showRedirectMail, setShowRedirectMail] = useState(false);
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
+    const images = [];
     const handleChange = (value) => {
         setUserSelected(value);
     };
@@ -47,20 +48,31 @@ const Index = () => {
             openedMail(data.opened_mail[0].id)
         }
     }
+    console.log(images)
     return (
         <>
             <div>
                 <div className="flex flex-row justify-between">
                     <div className={"w-10/12"}>
                         <div className="px-4 sm:px-0">
-                            <h3 className="text-base leading-7 text-gray-500">Отправитель: <strong
-                                className={"text-gray-900"}>{data.from_user_name}</strong></h3>
-                            <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Регион: <strong
-                                className={"text-gray-900"}>{data.document.region}</strong>
-                            </p>
-                            <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Управление: <strong
-                                className={"text-gray-900"}>{data.document.department}</strong>
-                            </p>
+                            <div className="flex flex-row">
+                                <div className="container">
+                                    <h3 className="text-base leading-7 text-gray-500">Отправитель: <strong
+                                        className={"text-gray-900"}>{data.from_user_name}</strong></h3>
+                                    <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Регион: <strong
+                                        className={"text-gray-900"}>{data.document.region}</strong>
+                                    </p>
+                                    <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Управление: <strong
+                                        className={"text-gray-900"}>{data.document.department}</strong>
+                                    </p>
+                                </div>
+                                <div>
+                                    <button
+                                        className={'px-4 py-2 bg-indigo-800 text-white rounded hover:bg-indigo-700'}>
+                                        Ответить
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div className="mt-6 border-t border-gray-100">
                             <dl className="divide-y divide-gray-100">
@@ -231,7 +243,6 @@ const Index = () => {
                             <span>Empty</span>
                     }
                 </div>
-
             </div>
         </>
     );

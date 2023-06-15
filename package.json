@@ -19,10 +19,10 @@
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-dropzone": "^14.2.3",
-    "react-pdf": "^7.1.2",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
+    "react-simple-image-viewer": "^1.2.2",
     "react-tailwindcss-datepicker": "^1.6.1",
     "react-tailwindcss-select": "^1.8.5",
     "web-vitals": "^2.1.4"
