@@ -233,7 +233,8 @@ export default function Index({open, setOpen,}) {
                                                                                         className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                                                                                     />
                                                                                 </div>
-                                                                                <div className="container flex flex-row">
+                                                                                <div
+                                                                                    className="container flex flex-row">
                                                                                     <div className="ml-3 text-sm">
                                                                                         <label htmlFor="importance"
                                                                                                className="font-medium text-gray-700">
@@ -375,7 +376,7 @@ export default function Index({open, setOpen,}) {
                                         </div>
                                         <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                             <button
-                                                disabled={!userSelected || !title}
+                                                disabled={!userSelected || !title || !type}
                                                 type="button"
                                                 className="disabled:bg-gray-300 inline-flex w-full justify-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 sm:ml-3 sm:w-auto"
                                                 onClick={sendMailFN}
