@@ -15,6 +15,7 @@ const Index = () => {
     const location = useLocation();
     const me = useSelector(state => state.auth.user);
     const [showRedirectMail, setShowRedirectMail] = useState(false);
+    const [replyShow, setReplyShow] = useState(false);
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
     const images = [];
@@ -48,7 +49,10 @@ const Index = () => {
             openedMail(data.opened_mail[0].id)
         }
     }
-    console.log(images)
+    const replyShowModal = () => {
+        setReplyShow(prevState => !prevState)
+    }
+    console.log(data)
     return (
         <>
             <div>
@@ -68,6 +72,7 @@ const Index = () => {
                                 </div>
                                 <div>
                                     <button
+                                        onClick={replyShowModal}
                                         className={'px-4 py-2 bg-indigo-800 text-white rounded hover:bg-indigo-700'}>
                                         Ответить
                                     </button>
