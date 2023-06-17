@@ -219,7 +219,7 @@ const Index = () => {
                         }
                     </div>
                 </div>
-                <div>
+                <div className={"w-8/12"}>
                     {
                         data.document.file.length > 0
                             ?
@@ -238,7 +238,7 @@ const Index = () => {
                                         </li>
                                         :
                                         <li key={item.id}
-                                            className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                                            className="flex items-center justify-between text-sm leading-6 h-screen">
                                             <PdfViewer
                                                 pdfFile={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
                                             />

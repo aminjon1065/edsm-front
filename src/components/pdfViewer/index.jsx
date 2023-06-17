@@ -2,7 +2,7 @@ import React from 'react';
 
 const Index = ({pdfFile}) => {
     return (
-        <div className={"w-full h-screen bg-red-700"}>
+        <div className={"w-full h-full"}>
             <iframe src={pdfFile}
                     className={"w-full h-full"} />
         </div>
