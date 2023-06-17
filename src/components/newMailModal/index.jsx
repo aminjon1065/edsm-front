@@ -92,6 +92,9 @@ export default function Index({open, setOpen,}) {
             setTitle('')
             setImportance(false)
             setFiles([])
+            if (response.status === 201) {
+                window.location.reload()
+            } 
             console.log(response)
         }).catch((error) => {
             setUserSelected(null);
@@ -101,6 +104,7 @@ export default function Index({open, setOpen,}) {
             setFiles([])
             console.log(error)
         })
+
     }
     return (
         <Transition.Root show={open} as={Fragment}>
