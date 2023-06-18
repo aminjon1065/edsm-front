@@ -172,7 +172,7 @@ const Index = () => {
                                                         className={`min-w-0 flex-1 px-4 py-2 rounded pt-1.5 flex justify-between space-x-4  text-gray-500 ${item.recipient.id === me.id ? 'bg-orange-500 text-slate-950' : null}`}>
                                                         <div>
                                                             <p className="text-sm">
-                                                                {item.recipient.full_name}
+                                                                {item.recipient.id === me.id ? 'Вы' : item.recipient.full_name}
                                                             </p>
                                                             <p className="text-sm">
                                                                 {item.status}
