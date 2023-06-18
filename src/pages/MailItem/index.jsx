@@ -248,6 +248,15 @@ const Index = () => {
                             <span>Empty</span>
                     }
                 </div>
+                {
+                    data.reply_to
+                        ?
+                        <div className={"bg-gray-200"}>
+                            <span>{data.reply_to.document.title_document}</span>
+                        </div>
+                        :
+                        null
+                }
             </div>
         </>
     );
