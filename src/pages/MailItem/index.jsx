@@ -10,6 +10,7 @@ import api from "../../services/api";
 import Select from "react-tailwindcss-select";
 import {fetchUsers} from "../../services/fetchUsers.service";
 import PdfViewer from "../../components/pdfViewer";
+import MailFilesViewer from "../../components/mailFilesViewer";
 
 const Index = () => {
     const location = useLocation();
@@ -219,35 +220,41 @@ const Index = () => {
                         }
                     </div>
                 </div>
-                <div className={"w-8/12"}>
+                <div className="flex flex-wrap w-full">
                     {
                         data.document.file.length > 0
                             ?
                             data.document.file.map((item, index) => (
                                 (item.extension_file === 'jpg'
                                         ?
-                                        <li key={item.id}
-                                            className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                            <div className="ml-4 flex-shrink-0">
-                                                <img
-                                                    src={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
-                                                    alt={item.name_file}
-                                                    className="font-medium text-indigo-600 hover:text-indigo-500 w-96"
-                                                />
+                                        <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"}>
+                                            <div key={item.id}>
+                                                <div className="ml-4 flex-shrink-0">
+                                                    <img
+                                                        src={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
+                                                        alt={item.name_file}
+                                                        className="font-medium text-indigo-600 hover:text-indigo-500 w-96"
+                                                    />
+                                                </div>
                                             </div>
-                                        </li>
+                                        </div>
                                         :
-                                        <li key={item.id}
-                                            className="flex items-center justify-between text-sm leading-6 h-screen">
-                                            <PdfViewer
-                                                pdfFile={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
-                                            />
-                                        </li>
+                                        <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-full mb-5"}>
+                                            <div className={"w-full h-5/6 rounded block"}>
+                                                <div className="h-screen">
+                                                    <PdfViewer
+                                                        pdfFile={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
                                 )))
                             :
                             <span>Empty</span>
                     }
                 </div>
+
                 {
                     data.reply_to
                         ?
