@@ -10,16 +10,15 @@ import api from "../../services/api";
 import Select from "react-tailwindcss-select";
 import {fetchUsers} from "../../services/fetchUsers.service";
 import PdfViewer from "../../components/pdfViewer";
-import MailFilesViewer from "../../components/mailFilesViewer";
+import ReplyMailModaL from './../../components/replyMailModal';
 
 const Index = () => {
     const location = useLocation();
     const me = useSelector(state => state.auth.user);
-    const [showRedirectMail, setShowRedirectMail] = useState(false);
-    const [replyShow, setReplyShow] = useState(false);
+    const [open, setOpen] = useState(false)
     const [userSelected, setUserSelected] = useState(null);
     const [usersList, setUsersList] = useState([]);
-    const images = [];
+    const [showFilesContainer, setShowFilesContainer] = useState(true);
     const handleChange = (value) => {
         setUserSelected(value);
     };
@@ -51,7 +50,10 @@ const Index = () => {
         }
     }
     const replyShowModal = () => {
-        setReplyShow(prevState => !prevState)
+        setOpen(true)
+    }
+    const showFilesContainerFn = () => {
+        setShowFilesContainer(prevState => !prevState);
     }
     console.log(data)
     return (
@@ -80,6 +82,8 @@ const Index = () => {
                                 </div>
                             </div>
                         </div>
+                        <ReplyMailModaL open={open} setOpen={setOpen} mailId={mailId} userId={data.from}
+                                        type={data.document.type}/>
                         <div className="mt-6 border-t border-gray-100">
                             <dl className="divide-y divide-gray-100">
                                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -209,7 +213,7 @@ const Index = () => {
                                         />
                                     </div>
                                     <button
-                                        onClick={() => setShowRedirectMail(prevState => !prevState)}
+                                        onClick={() => console.log("CLICK")}
                                         className={"bg-gray-800 text-white px-4 py-2 rounded hover:bg-slate-700"}
                                     >
                                         Перенаправить
@@ -220,20 +224,28 @@ const Index = () => {
                         }
                     </div>
                 </div>
-                <div className="flex flex-wrap w-full">
+                <button
+                    className={"bg-slate-800 px-4 py-2 hover:bg-slate-700 text-white rounded"}
+                    onClick={showFilesContainerFn}
+                >
+                    {showFilesContainer ? 'Скрыть файлы' : 'Показывать файлы'}
+                </button>
+
+                <div
+                    className={`flex flex-wrap w-full ease-in-out transition-all duration-200 ${showFilesContainer ? "opacity-100" : "opacity-0"}`}>
                     {
                         data.document.file.length > 0
                             ?
                             data.document.file.map((item, index) => (
                                 (item.extension_file === 'jpg'
                                         ?
-                                        <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5"}>
+                                        <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-5"}>
                                             <div key={item.id}>
                                                 <div className="ml-4 flex-shrink-0">
                                                     <img
                                                         src={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
                                                         alt={item.name_file}
-                                                        className="font-medium text-indigo-600 hover:text-indigo-500 w-96"
+                                                        className="font-medium text-indigo-600 hover:text-indigo-500 w-96 rounded-lg"
                                                     />
                                                 </div>
                                             </div>

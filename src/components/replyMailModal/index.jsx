@@ -7,22 +7,13 @@ import api from "../../services/api";
 import Editor from "./../editor";
 import {fetchUsers} from "../../services/fetchUsers.service";
 
-export default function Index({open, setOpen}) {
+export default function Index({open, setOpen, mailId, userId, type}) {
     // Локальные состояния
     const [userSelected, setUserSelected] = useState(null);
     const [htmlContent, setHtmlContent] = useState("");
-    const [type, setType] = useState("");
     const [title, setTitle] = useState("")
-    const [importance, setImportance] = useState(false)
     const cancelButtonRef = useRef(null);
-    const [usersList, setUsersList] = useState([]);
     const [files, setFiles] = useState([]);
-    // Запрос на получение пользователей при монтировании компонента
-    useEffect(() => {
-        fetchUsers().then((res) => {
-            setUsersList(res.data)
-        });
-    }, []);
     // Получение контента редактора
     const getContent = (htmlContentProp) => {
         setHtmlContent(htmlContentProp);
@@ -37,23 +28,10 @@ export default function Index({open, setOpen}) {
     const removeFile = (fileIndex) => {
         setFiles((prevFiles) => prevFiles.filter((_, index) => index !== fileIndex));
     };
-    // Функция получения списка пользователей
 
     const handleChangeTitle = (e) => {
         setTitle(e.target.value)
     }
-    const handleChangeType = (e) => {
-        setType(e.target.value)
-    }
-
-    const handleChangeImportance = (e) => {
-        setImportance(!importance)
-    }
-    // Обработчик изменения значения выбранных пользователей
-    const handleChange = (value) => {
-        setUserSelected(value);
-    };
-
     // Использование React Dropzone хука
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
         onDrop,
@@ -70,19 +48,15 @@ export default function Index({open, setOpen}) {
         formData.append('title_document', title);
         formData.append('type', type);
         formData.append('content', htmlContent);
-        formData.append('importance', importance ? '1' : '0');
-        if (userSelected.length > 0) {
-            for (let i = 0; i < userSelected.length; i++) {
-                formData.append('to[]', userSelected[i].value);
-            }
-        }
+        formData.append('importance', '0');
+        formData.append('to', userId);
         if (files.length > 0) {
             for (let i = 0; i < files.length; i++) {
                 formData.append('files[]', files[i]);
             }
         }
         setOpen(false)
-        api.post('/send', formData, {
+        api.post(`/mail/reply-to/${mailId}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -90,7 +64,6 @@ export default function Index({open, setOpen}) {
             setUserSelected(null);
             setHtmlContent('');
             setTitle('')
-            setImportance(false)
             setFiles([])
             if (response.status === 201) {
                 window.location.reload()
@@ -100,7 +73,6 @@ export default function Index({open, setOpen}) {
             setUserSelected(null);
             setHtmlContent('');
             setTitle('')
-            setImportance(false)
             setFiles([])
             console.log(error)
         })
@@ -150,7 +122,8 @@ export default function Index({open, setOpen}) {
                                                         as="h3"
                                                         className="text-base font-semibold leading-6 text-gray-900 ml-2"
                                                     >
-                                                        Новое письмо
+                                                        Ответ к письму <span
+                                                        className={"text-blue-600 font-bold"}>{mailId}</span>
                                                     </Dialog.Title>
                                                 </div>
                                                 <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
@@ -160,39 +133,19 @@ export default function Index({open, setOpen}) {
                                                                 <div>
                                                                     <div
                                                                         className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3">
-
-                                                                        <div className="sm:col-span-6">
-                                                                            <label htmlFor="username"
-                                                                                   className="block text-sm font-medium text-gray-700">
-                                                                                Кому
-                                                                                <sup
-                                                                                    className={"text-red-500 font-bold"}>*</sup>
-                                                                            </label>
-                                                                            <div
-                                                                                className="mt-1 flex rounded-md shadow-sm">
-                                                                                <Select
-                                                                                    id={"username"}
-                                                                                    primaryColor={"indigo"}
-                                                                                    noOptionsMessage={"Такого пользователя не существует"}
-                                                                                    searchInputPlaceholder={""}
-                                                                                    isSearchable
-                                                                                    isMultiple
-                                                                                    value={userSelected}
-                                                                                    onChange={handleChange}
-                                                                                    options={usersList}
-                                                                                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                                                                />
-                                                                            </div>
-                                                                        </div>
                                                                         <div className="sm:col-span-6">
                                                                             <label htmlFor="title"
                                                                                    className="block text-sm font-medium text-gray-700">
                                                                                 Заголовок
                                                                                 <sup
-                                                                                    className={"text-red-500 font-bold"}>*</sup>
+                                                                                    className={"text-red-500 font-bold"}
+                                                                                >
+                                                                                    *
+                                                                                </sup>
                                                                             </label>
                                                                             <div
-                                                                                className="mt-1 rounded-md shadow-sm">
+                                                                                className="mt-1 rounded-md shadow-sm"
+                                                                            >
                                                                                 <input
                                                                                     value={title}
                                                                                     onChange={handleChangeTitle}
@@ -203,98 +156,22 @@ export default function Index({open, setOpen}) {
                                                                             </div>
                                                                         </div>
                                                                         <div className="sm:col-span-6">
-                                                                            <label htmlFor="description"
-                                                                                   className="block text-sm font-medium text-gray-700">
-                                                                                Текст
+                                                                            <label
+                                                                                htmlFor="description"
+                                                                                className="block text-sm font-medium text-gray-700"
+                                                                            >
+                                                                                Содержимое
                                                                             </label>
                                                                             <div
-                                                                                className="">
+                                                                                className=""
+                                                                            >
                                                                                 <Editor getContent={getContent}/>
                                                                             </div>
-                                                                            {/*<div className="mt-1">*/}
-                                                                            {/*    <textarea*/}
-                                                                            {/*        id="description"*/}
-                                                                            {/*        name="about"*/}
-                                                                            {/*        rows={3}*/}
-                                                                            {/*        className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"*/}
-                                                                            {/*        defaultValue={''}*/}
-                                                                            {/*    />*/}
-                                                                            {/*</div>*/}
                                                                             <p className="mt-2 text-sm text-gray-500">
                                                                                 дополнение, тело документа,
                                                                                 примечание и т.д.
                                                                             </p>
                                                                         </div>
-                                                                        <div className="sm:col-span-6">
-                                                                            <div
-                                                                                className="relative flex items-start">
-                                                                                <div
-                                                                                    className="flex items-center h-5">
-                                                                                    <input
-                                                                                        value={importance}
-                                                                                        onChange={handleChangeImportance}
-                                                                                        id="importance"
-                                                                                        name="importance"
-                                                                                        type="checkbox"
-                                                                                        className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                                                                                    />
-                                                                                </div>
-                                                                                <div
-                                                                                    className="container flex flex-row">
-                                                                                    <div className="ml-3 text-sm">
-                                                                                        <label htmlFor="importance"
-                                                                                               className="font-medium text-gray-700">
-                                                                                            Председателю
-                                                                                        </label>
-                                                                                        <p className="text-gray-500">
-                                                                                            Если документ хотите
-                                                                                            передать
-                                                                                            председателю
-                                                                                        </p>
-                                                                                    </div>
-                                                                                    <div className="w-full">
-                                                                                        <label htmlFor="type"
-                                                                                               className="block text-sm font-medium text-gray-700">
-                                                                                            Тип документа
-                                                                                            <sup
-                                                                                                className={"text-red-500 font-bold"}>*</sup>
-                                                                                        </label>
-                                                                                        <div
-                                                                                            className="mt-1 rounded-md shadow-sm">
-                                                                                            <input
-                                                                                                value={type}
-                                                                                                onChange={handleChangeType}
-                                                                                                type="text"
-                                                                                                id={"type"}
-                                                                                                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                                                                            />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            {/*<label htmlFor="photo"*/}
-                                                                            {/*       className="block text-sm font-medium text-gray-700">*/}
-                                                                            {/*    Photo*/}
-                                                                            {/*</label>*/}
-                                                                            {/*<div className="mt-1 flex items-center">*/}
-                                                                            {/*    <span*/}
-                                                                            {/*        className="h-12 w-12 rounded-full overflow-hidden bg-gray-100">*/}
-                                                                            {/*        <svg className="h-full w-full text-gray-300"*/}
-                                                                            {/*             fill="currentColor"*/}
-                                                                            {/*             viewBox="0 0 24 24">*/}
-                                                                            {/*            <path*/}
-                                                                            {/*                d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"/>*/}
-                                                                            {/*        </svg>*/}
-                                                                            {/*    </span>*/}
-                                                                            {/*    <button*/}
-                                                                            {/*        type="button"*/}
-                                                                            {/*        className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"*/}
-                                                                            {/*    >*/}
-                                                                            {/*        Change*/}
-                                                                            {/*    </button>*/}
-                                                                            {/*</div>*/}
-                                                                        </div>
-
                                                                         <div className="sm:col-span-6">
                                                                             <label htmlFor="cover-photo"
                                                                                    className="block text-sm font-medium text-gray-700">
@@ -382,7 +259,7 @@ export default function Index({open, setOpen}) {
                                         </div>
                                         <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                             <button
-                                                disabled={!userSelected || !title || !type}
+                                                disabled={!title}
                                                 type="button"
                                                 className="disabled:bg-gray-300 inline-flex w-full justify-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 sm:ml-3 sm:w-auto"
                                                 onClick={sendMailFN}
