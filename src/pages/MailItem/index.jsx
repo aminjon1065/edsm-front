@@ -225,7 +225,7 @@ const Index = () => {
                     </div>
                 </div>
                 <button
-                    className={"bg-slate-800 px-4 py-2 hover:bg-slate-700 text-white rounded"}
+                    className={"bg-slate-800 px-4 py-2 hover:bg-slate-700 text-white rounded mb-5"}
                     onClick={showFilesContainerFn}
                 >
                     {showFilesContainer ? 'Скрыть файлы' : 'Показывать файлы'}
@@ -266,7 +266,6 @@ const Index = () => {
                             <span>Empty</span>
                     }
                 </div>
-
                 {
                     data.reply_to
                         ?
