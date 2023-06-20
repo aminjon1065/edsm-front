@@ -14,16 +14,16 @@ export const messagesApi = createApi({
     }),
     endpoints: (build) => ({
         getMessages: build.query({
-            query: ({page, searchQuery, startDate, endDate}) => {
-                let queryString = `inbox?page=${page}&query=&startDate=&endDate=`;
+            query: ({page, searchQuery, startDate, endDate, type}) => {
+                let queryString = `${type}?page=${page}&query=&startDate=&endDate=`;
                 if (searchQuery) {
-                    queryString = `inbox?page=&query=${searchQuery}&startDate=&endDate=`;
+                    queryString = `${type}?page=&query=${searchQuery}&startDate=&endDate=`;
                 }
                 if (startDate && endDate) {
-                    queryString = `inbox?page=&query=&startDate=${startDate}&endDate=${endDate}`;
+                    queryString = `${type}?page=&query=&startDate=${startDate}&endDate=${endDate}`;
                 }
                 if (searchQuery && startDate && endDate) {
-                    queryString = `inbox?page=&query=${searchQuery}&startDate=${startDate}&endDate=${endDate}`;
+                    queryString = `${type}?page=&query=${searchQuery}&startDate=${startDate}&endDate=${endDate}`;
                 }
                 return queryString;
             },

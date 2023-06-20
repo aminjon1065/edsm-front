@@ -133,13 +133,13 @@ const Index = () => {
                                                                     download
                                                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                                                 >
-                                                                    Download
+                                                                    Скачать
                                                                 </a>
                                                             </div>
                                                         </li>
                                                     ))
                                                     :
-                                                    <span>Empty</span>
+                                                    <span>Файлов нет!</span>
                                             }
                                         </ul>
                                     </dd>
@@ -224,20 +224,26 @@ const Index = () => {
                         }
                     </div>
                 </div>
-                <button
-                    className={"bg-slate-800 px-4 py-2 hover:bg-slate-700 text-white rounded mb-5"}
-                    onClick={showFilesContainerFn}
-                >
-                    {showFilesContainer ? 'Скрыть файлы' : 'Показывать файлы'}
-                </button>
+                {
+                    data.document.file.length > 0
+                        ?
+                        <button
+                            className={"bg-slate-800 px-4 py-2 hover:bg-slate-700 text-white rounded mb-5"}
+                            onClick={showFilesContainerFn}
+                        >
+                            {showFilesContainer ? 'Скрыть файлы' : 'Показывать файлы'}
+                        </button>
 
+                        :
+                        null
+                }
                 <div
                     className={`flex flex-wrap w-full ease-in-out transition-all duration-200 ${showFilesContainer ? "opacity-100" : "opacity-0"}`}>
                     {
                         data.document.file.length > 0
                             ?
                             data.document.file.map((item, index) => (
-                                (item.extension_file === 'jpg'
+                                (item.extension_file === 'jpg' || 'png'
                                         ?
                                         <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-5"}>
                                             <div key={item.id}>
@@ -263,7 +269,7 @@ const Index = () => {
 
                                 )))
                             :
-                            <span>Empty</span>
+                            <span>Файлов нет!</span>
                     }
                 </div>
                 {

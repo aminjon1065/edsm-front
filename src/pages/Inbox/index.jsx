@@ -4,7 +4,7 @@ import {ChevronRightIcon} from '@heroicons/react/24/solid';
 import {useNavigate} from 'react-router-dom';
 
 import usePageTitle from '../../hooks/usePageTitle';
-import {useGetMessagesQuery} from '../../services/inbox.service';
+import {useGetMessagesQuery} from '../../services/getMails.service';
 import Loader from '../../components/Loader';
 import Modal from '../../components/newMailModal';
 import Datepicker from 'react-tailwindcss-datepicker';
@@ -25,6 +25,7 @@ const Index = () => {
         searchQuery: searchText,
         startDate: dates.startDate,
         endDate: dates.endDate,
+        type: 'inbox'
     });
 
     const handleValueChange = (newValue) => {
@@ -195,11 +196,11 @@ const Index = () => {
                                         </th>
                                         <th scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            От
+                                            статус
                                         </th>
                                         <th scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Role
+                                            председателю
                                         </th>
                                         <th scope="col" className="relative px-6 py-3">
                                             <span className="sr-only">Edit</span>
@@ -212,17 +213,18 @@ const Index = () => {
                                             <tr
                                                 key={mail.id}
                                                 onClick={() => showMailItem(mail.uuid)}
-                                                className={`${mail?.opened_mail[0]?.opened ? 'bg-slate-100' : `${mail.document.importance ? 'bg-red-400' : 'bg-white'}`}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}
+                                                className={`${mail?.opened_mail[0]?.opened ? 'bg-slate-100' : 'bg-white'}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}
                                             >
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mail.id}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}({mail.from_user_name})</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}
+                                                    <span className={"text-indigo-500"}>({mail.from_user_name})</span>
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     <span
-                                                        className={'bg-orange-300 text-slate-950 px-4 py-2 rounded'}>Вне</span> :
-                                                    <span
-                                                        className={'bg-green-300 text-slate-950 px-4 py-2 rounded'}>{mail.document.type}</span>}</td>
+                                                        className={`${mail.document.type === 'Хоричи' ? 'bg-red-500 text-white' : mail.document.type === 'Дохилӣ' ? 'bg-yellow-500' : 'bg-gray-500 text-white'} text-slate-950 px-4 py-2 rounded`}>{mail.document.type}</span>
+                                                </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{mail.document.status}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">{mail.id}</td>
+                                                <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 `}><span className={`${mail.document.importance ? 'bg-red-500' : 'bg-gray-500'} px-4 py-2 rounded text-white`}>{mail.document.importance ? 'Да' : 'Нет'}</span></td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                     <a href="/" className="text-indigo-600 hover:text-indigo-900">
                                                         Edit

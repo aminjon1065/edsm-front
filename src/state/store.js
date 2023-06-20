@@ -1,6 +1,6 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import authReducer from './slices/signIn';
-import {messagesApi} from "../services/inbox.service";
+import {messagesApi} from "../services/getMails.service";
 import {inboxApiById} from "../services/show.mail.service";
 
 const rootReducer = combineReducers({
