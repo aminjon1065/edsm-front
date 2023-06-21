@@ -8,6 +8,7 @@ import {useGetMessagesQuery} from '../../services/getMails.service';
 import Loader from '../../components/Loader';
 import Modal from '../../components/newMailModal';
 import Datepicker from 'react-tailwindcss-datepicker';
+import NotificationMail from "../../components/notificationMail";
 
 const Index = () => {
     usePageTitle('Входящие');
@@ -78,6 +79,7 @@ const Index = () => {
 
     return (
         <div className="flex flex-col">
+            {/*<NotificationMail />*/}
             <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="flex justify-start mb-5">
