@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import Echo from 'laravel-echo';
+import Pusher from "pusher-js";
+// import Echo from 'laravel-echo';
 
 const Index = () => {
-    const [notification, setNotification] = useState('');
+    // const [notification, setNotification] = useState('');
 
     useEffect(() => {
         // Подключение к каналу Laravel Echo
-        window.Echo.channel('mail-sent')
-            .listen('.MailSentEvent', (data) => {
-                // Обработка уведомления о отправке письма
-                console.log('Mail sent:', data.mail);
-                setNotification(data.message); // Сохранение текста письма в состоянии компонента
-            });
+        Pusher.logToConsole = true;
 
-        return () => {
-            // Отключение от канала при размонтировании компонента
-            window.Echo.leaveChannel('mail-sent');
-        };
+        const pusher = new Pusher('7df99e1bf3471243c810', {
+            cluster: 'ap1'
+        });
+
+        const channel = pusher.subscribe('my-channel');
+        channel.bind('my-event', function(data) {
+            console.log(JSON.stringify(data));
+        });
     }, []);
 
     // Остальная логика компонента...
@@ -24,7 +24,7 @@ const Index = () => {
     return (
         <div>
             <div>Mail Component</div>
-            {notification && <div>Notification: {notification}</div>}
+            {/*{notification && <div>Notification: {notification}</div>}*/}
         </div>
     );
 };
