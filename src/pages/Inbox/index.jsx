@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
-import {ChevronLeftIcon, EnvelopeIcon} from '@heroicons/react/24/outline';
-import {ChevronRightIcon} from '@heroicons/react/24/solid';
-import {useNavigate} from 'react-router-dom';
-
+import React, { useState, useEffect } from 'react';
+import { ChevronLeftIcon, EnvelopeIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon } from '@heroicons/react/24/solid';
+import { useNavigate } from 'react-router-dom';
+import { VITE_PUSHER_APP_KEY, VITE_PUSHER_HOST, VITE_PUSHER_APP_CLUSTER } from '../../helper/CONSTANTS';
 import usePageTitle from '../../hooks/usePageTitle';
-import {useGetMessagesQuery} from '../../services/getMails.service';
+import { useGetMessagesQuery } from '../../services/getMails.service';
 import Loader from '../../components/Loader';
 import Modal from '../../components/newMailModal';
 import Datepicker from 'react-tailwindcss-datepicker';
 import NotificationMail from "../../components/notificationMail";
-
+import Pusher from "pusher-js";
+import Echo from "laravel-echo";
 const Index = () => {
     usePageTitle('Входящие');
     const navigate = useNavigate();
@@ -20,8 +21,8 @@ const Index = () => {
         startDate: '',
         endDate: '',
     });
-
-    const {data = [], isLoading, error} = useGetMessagesQuery({
+    const [test, setTest] = useState('')
+    const { data = [], isLoading, error } = useGetMessagesQuery({
         page: pageNum,
         searchQuery: searchText,
         startDate: dates.startDate,
@@ -64,11 +65,30 @@ const Index = () => {
     const showMailItem = (uuid) => {
         navigate(`/inbox/${uuid}`);
     };
+    useEffect(() => {
+        Window.Pusher = Pusher;
+        Window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key: VITE_PUSHER_APP_KEY,
+            cluster: VITE_PUSHER_APP_CLUSTER ?? 'mt1',
+            wsHost: VITE_PUSHER_HOST,
+            wsPort: 6001,
+            // wssPort: VITE_PUSHER_PORT ?? 443,
+            forceTLS: false,
+            // enabledTransports: ['ws', 'wss'],
+            disableStats: true
+        });
+        Window.Echo.channel('channel').listen('Hello', (e) => {
+            console.log(e);
+            setTest(e.hello)
+        })
+    }, [])
 
+    console.log(test);
     if (isLoading) {
         return (
             <div className={'min-h-screen flex items-center justify-center'}>
-                <Loader/>
+                <Loader />
             </div>
         );
     }
@@ -87,23 +107,26 @@ const Index = () => {
                                 className="px-4 py-2 bg-slate-800 text-white rounded-md hover:bg-slate-600 flex"
                                 onClick={showModal}
                             >
-                                <EnvelopeIcon className="block h-6 w-6 mr-2" aria-hidden="true"/>
+                                <EnvelopeIcon className="block h-6 w-6 mr-2" aria-hidden="true" />
                                 Новое письмо
+                                {
+                                    test
+                                }
                             </button>
-                            <Modal open={open} setOpen={setOpen}/>
+                            <Modal open={open} setOpen={setOpen} />
                         </div>
                     </div>
                     {data.to ? <span>{data.to} из {data.total}</span> : null}
                     <div className={'flex flex-row items-center justify-between mb-3'}>
                         <div className={'flex justify-start'}>
                             <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm bg-indigo-700"
-                                 aria-label="Pagination">
+                                aria-label="Pagination">
                                 <button
                                     disabled={!data.prev_page_url}
                                     onClick={prevPage}
                                     className={`relative bg-gray-100 inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0`}
                                 >
-                                    <ChevronLeftIcon className="h-5 w-5" aria-hidden="true"/>
+                                    <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
                                 </button>
                                 {data.next_page_url ? (
                                     <>
@@ -112,7 +135,7 @@ const Index = () => {
                                             className="relative bg-gray-100 inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
                                         >
                                             <span className="sr-only">Next</span>
-                                            <ChevronRightIcon className="h-5 w-5" aria-hidden="true"/>
+                                            <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
                                         </button>
                                     </>
                                 ) : null}
@@ -182,60 +205,60 @@ const Index = () => {
                             <div className="shadow overflow-hidden border border-indigo-700 sm:rounded-lg">
                                 <table className="min-w-full divide-y divide-gray-50">
                                     <thead className="bg-slate-100">
-                                    <tr>
-                                        <th scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            ID
-                                        </th>
-                                        <th scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            От куда
-                                        </th>
-                                        <th scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            ТИП
-                                        </th>
-                                        <th scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            статус
-                                        </th>
-                                        <th scope="col"
-                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            председателю
-                                        </th>
-                                        <th scope="col" className="relative px-6 py-3">
-                                            <span className="sr-only">Edit</span>
-                                        </th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                ID
+                                            </th>
+                                            <th scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                От куда
+                                            </th>
+                                            <th scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                ТИП
+                                            </th>
+                                            <th scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                статус
+                                            </th>
+                                            <th scope="col"
+                                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                председателю
+                                            </th>
+                                            <th scope="col" className="relative px-6 py-3">
+                                                <span className="sr-only">Edit</span>
+                                            </th>
+                                        </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-50">
-                                    {data.data.map((mail, index) =>
-                                        mail.document ? (
-                                            <tr
-                                                key={mail.id}
-                                                onClick={() => showMailItem(mail.uuid)}
-                                                className={`${mail?.opened_mail[0]?.opened ? 'bg-slate-100' : 'bg-white'}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}
-                                            >
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mail.id}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}
-                                                    <span className={"text-indigo-500"}>({mail.from_user_name})</span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <span
-                                                        className={`${mail.document.type === 'Хоричи' ? 'bg-red-500 text-white' : mail.document.type === 'Дохилӣ' ? 'bg-yellow-500' : 'bg-gray-500 text-white'} text-slate-950 px-4 py-2 rounded`}>{mail.document.type}</span>
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{mail.document.status}</td>
-                                                <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 `}><span className={`${mail.document.importance ? 'bg-red-500' : 'bg-gray-500'} px-4 py-2 rounded text-white`}>{mail.document.importance ? 'Да' : 'Нет'}</span></td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                    <a href="/" className="text-indigo-600 hover:text-indigo-900">
-                                                        Edit
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            <span>NotFound</span>
-                                        )
-                                    )}
+                                        {data.data.map((mail, index) =>
+                                            mail.document ? (
+                                                <tr
+                                                    key={mail.id}
+                                                    onClick={() => showMailItem(mail.uuid)}
+                                                    className={`${mail?.opened_mail[0]?.opened ? 'bg-slate-100' : 'bg-white'}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}
+                                                >
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mail.id}</td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}
+                                                        <span className={"text-indigo-500"}>({mail.from_user_name})</span>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        <span
+                                                            className={`${mail.document.type === 'Хоричи' ? 'bg-red-500 text-white' : mail.document.type === 'Дохилӣ' ? 'bg-yellow-500' : 'bg-gray-500 text-white'} text-slate-950 px-4 py-2 rounded`}>{mail.document.type}</span>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{mail.document.status}</td>
+                                                    <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 `}><span className={`${mail.document.importance ? 'bg-red-500' : 'bg-gray-500'} px-4 py-2 rounded text-white`}>{mail.document.importance ? 'Да' : 'Нет'}</span></td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <a href="/" className="text-indigo-600 hover:text-indigo-900">
+                                                            Edit
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                <span>NotFound</span>
+                                            )
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
