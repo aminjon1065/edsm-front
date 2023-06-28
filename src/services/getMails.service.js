@@ -14,16 +14,16 @@ export const messagesApi = createApi({
     }),
     endpoints: (build) => ({
         getMessages: build.query({
-            query: ({page, searchQuery, startDate, endDate, type}) => {
-                let queryString = `${type}?page=${page}&query=&startDate=&endDate=`;
+            query: ({page, searchQuery, startDate, endDate, order, column, type}) => {
+                let queryString = `${type}?page=${page}&query=&startDate=&endDate=&order=${order}&column=${column}`;
                 if (searchQuery) {
-                    queryString = `${type}?page=&query=${searchQuery}&startDate=&endDate=`;
+                    queryString = `${type}?page&query=${searchQuery}&startDate=&endDate=&order=${order}&column=${column}`;
                 }
                 if (startDate && endDate) {
-                    queryString = `${type}?page=&query=&startDate=${startDate}&endDate=${endDate}`;
+                    queryString = `${type}?page=${page}&query=&startDate=${startDate}&endDate=${endDate}&order=${order}&column=${column}`;
                 }
                 if (searchQuery && startDate && endDate) {
-                    queryString = `${type}?page=&query=${searchQuery}&startDate=${startDate}&endDate=${endDate}`;
+                    queryString = `${type}?page=${page}&query=${searchQuery}&startDate=${startDate}&endDate=${endDate}&order=${order}&column=${column}`;
                 }
                 return queryString;
             },

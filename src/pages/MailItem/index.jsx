@@ -55,7 +55,6 @@ const Index = () => {
     const showFilesContainerFn = () => {
         setShowFilesContainer(prevState => !prevState);
     }
-    console.log(data)
     return (
         <>
             <div>

@@ -33,7 +33,7 @@ const authSlice = createSlice({
             state.isLoading = false;
             state.isAuth = true;
             state.error = null;
-            state.user = action.payload?.data;
+            state.user = action.payload.user;
             localStorage.setItem('token', action.payload?.token);
         },
         loginFailure(state, action) {
@@ -58,6 +58,7 @@ export const login = (email, password) => async (dispatch) => {
             email: email,
             password: password,
         });
+        console.log(response.data)
         dispatch(loginSuccess(response.data));
     } catch (error) {
         dispatch(loginFailure("Неправильный логин или пароль!"));

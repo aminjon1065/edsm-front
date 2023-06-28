@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {checkAuth} from "./state/slices/signIn";
@@ -8,6 +8,7 @@ import MainRoutes from "./routes/MainRoutes";
 
 const App = () => {
     const isAuth = useSelector(state => state.auth.isAuth);
+    const selector = useSelector(state => state.auth);
     const dispatch = useDispatch()
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -15,11 +16,11 @@ const App = () => {
             dispatch(checkAuth(token))
         }
     }, [dispatch])
-    const selector = useSelector(state => state.auth.isLoading);
+
     return (
         <>
             {
-                selector
+                selector.isLoading
                     ?
                     <div className={"h-screen flex justify-center items-center"}>
                         <Loader/>
