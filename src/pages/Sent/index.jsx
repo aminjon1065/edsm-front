@@ -188,7 +188,7 @@ const Index = () => {
                                         </th>
                                         <th scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            От куда
+                                            Кому
                                         </th>
                                         <th scope="col"
                                             className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -216,7 +216,7 @@ const Index = () => {
                                                 className={`${mail?.opened_mail[0]?.opened ? 'bg-slate-100' : `${mail.document.importance ? 'bg-red-400' : 'bg-white'}`}  border-b border-gray-100 hover:bg-slate-300 cursor-pointer`}
                                             >
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{mail.id}</td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.document.region}({mail.from_user_name})</td>
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">{mail.to_user.region}({mail.to_user.full_name})</td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{mail.document.type === '1' ?
                                                     <span
                                                         className={'bg-orange-300 text-slate-950 px-4 py-2 rounded'}>Вне</span> :

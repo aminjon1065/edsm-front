@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ChevronLeftIcon, EnvelopeIcon} from '@heroicons/react/24/outline';
 import {ChevronRightIcon} from '@heroicons/react/24/solid';
 import {useNavigate} from 'react-router-dom';
@@ -7,26 +7,21 @@ import {useGetMessagesQuery} from '../../services/getMails.service';
 import Loader from '../../components/Loader';
 import Modal from '../../components/newMailModal';
 import Datepicker from 'react-tailwindcss-datepicker';
-import Echo from 'laravel-echo';
-import {useDispatch, useSelector} from "react-redux";
-import NotificationModal from './../../components/notificationModal';
-import {openNotification} from "../../state/slices/notification";
+import {useSelector} from "react-redux";
 
 const Index = () => {
     usePageTitle('Входящие');
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
     const [column, setColumn] = useState('id');
     const [order, setOrder] = useState('desc');
     const [pageNum, setPageNum] = useState(1);
     const [searchText, setSearchText] = useState('');
-    const [notification, setNotification] = useState('');
     const [dates, setDates] = useState({
         startDate: '',
         endDate: '',
     });
-    const {data = [], isLoading, error} = useGetMessagesQuery({
+    const {data = [], isLoading, error, refetch} = useGetMessagesQuery({
         page: pageNum,
         order: order,
         column: column,
@@ -35,11 +30,14 @@ const Index = () => {
         endDate: !dates.endDate ? '' : dates.endDate,
         type: 'inbox'
     });
-
+    const selectorNotification = useSelector(state => state.notificationModal);
+    useEffect(() => {
+        refetch()
+    }, [selectorNotification, refetch])
     const handleValueChange = (newValue) => {
         setDates(newValue);
     };
-
+    console.log(data);
     const prevPage = () => {
         if (pageNum > 1) {
             setPageNum(pageNum - 1);
@@ -86,7 +84,6 @@ const Index = () => {
     if (error) {
         return <span>Error!</span>;
     }
-    console.log(data)
     return (
         <div className="flex flex-col">
             <div className="-my-2 scrollbar-none sm:-mx-6 lg:-mx-8 h-screen">
