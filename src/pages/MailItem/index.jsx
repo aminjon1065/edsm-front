@@ -11,6 +11,7 @@ import Select from "react-tailwindcss-select";
 import {fetchUsers} from "../../services/fetchUsers.service";
 import PdfViewer from "../../components/pdfViewer";
 import ReplyMailModaL from './../../components/replyMailModal';
+import formatterDay from "../../utils";
 
 const Index = () => {
     const location = useLocation();
@@ -183,7 +184,7 @@ const Index = () => {
                                                             </p>
                                                         </div>
                                                         <div className="text-right text-sm whitespace-nowrap">
-                                                            <time dateTime={item.created_at}>{item.created_at}</time>
+                                                            <time dateTime={item.created_at}>{formatterDay(item.created_at)}</time>
                                                         </div>
                                                     </div>
                                                 </div>
