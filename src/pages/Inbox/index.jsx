@@ -37,7 +37,6 @@ const Index = () => {
     const handleValueChange = (newValue) => {
         setDates(newValue);
     };
-    console.log(data);
     const prevPage = () => {
         if (pageNum > 1) {
             setPageNum(pageNum - 1);
@@ -217,7 +216,7 @@ const Index = () => {
                                     </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-50">
-                                    {data.data.map((mail, index) =>
+                                    {data.data.map((mail) =>
                                         mail.document ? (
                                             <tr
                                                 key={mail.id}
@@ -230,7 +229,7 @@ const Index = () => {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         <span
-                                                            className={`${mail.document.type === 'Хоричи' ? 'bg-red-500 text-white' : mail.document.type === 'Дохилӣ' ? 'bg-yellow-500' : 'bg-gray-500 text-white'} text-slate-950 px-4 py-2 rounded`}>{mail.document.type}</span>
+                                                            className={`${mail.document.type === 'Иностранные' ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' : mail.document.type === 'Внутренные' ? 'bg-gradient-to-r from-slate-500 from-10% to-slate-700 text-white' : mail.document.type==="Контрольные" ? 'bg-gradient-to-r from-pink-500 from-10% to-red-500 text-white' : "bg-gray-500"} text-slate-950 px-4 py-2 rounded`}>{mail.document.type}</span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{mail.document.status}</td>
                                                 <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 `}>

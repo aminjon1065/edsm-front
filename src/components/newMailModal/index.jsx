@@ -43,9 +43,15 @@ export default function Index({open, setOpen}) {
         setTitle(e.target.value)
     }
     const handleChangeType = (e) => {
-        setType(e.target.value)
-    }
+        setType(e.target.value);
+        console.log(e.target.value)
 
+    }
+    const typeasArray = [
+        'Иностранные',
+        'Внутренные',
+        ''
+    ];
     const handleChangeImportance = (e) => {
         setImportance(!importance)
     }
@@ -95,6 +101,7 @@ export default function Index({open, setOpen}) {
             // if (response.status === 201) {
             //     window.location.reload()
             // }
+            setType("")
             console.log(response)
         }).catch((error) => {
             setUserSelected(null);
@@ -104,7 +111,6 @@ export default function Index({open, setOpen}) {
             setFiles([])
             console.log(error)
         })
-
     }
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -252,7 +258,7 @@ export default function Index({open, setOpen}) {
                                                                                             председателю
                                                                                         </p>
                                                                                     </div>
-                                                                                    <div className="w-full">
+                                                                                    <div className="w-2/3">
                                                                                         <label htmlFor="type"
                                                                                                className="block text-sm font-medium text-gray-700">
                                                                                             Тип документа
@@ -261,13 +267,33 @@ export default function Index({open, setOpen}) {
                                                                                         </label>
                                                                                         <div
                                                                                             className="mt-1 rounded-md shadow-sm">
-                                                                                            <input
-                                                                                                value={type}
-                                                                                                onChange={handleChangeType}
-                                                                                                type="text"
-                                                                                                id={"type"}
-                                                                                                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
-                                                                                            />
+                                                                                            <select name="type"
+                                                                                                    value={type}
+                                                                                                    onChange={handleChangeType}
+                                                                                                    id="type"
+                                                                                                    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"
+                                                                                            >
+                                                                                                <option disabled={true}
+                                                                                                        value="">
+                                                                                                    Выберите вариант
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="Иностранные">Иностранные
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="Внутренные">Внутренные
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="Контрольные">Контрольные
+                                                                                                </option>
+                                                                                            </select>
+                                                                                            {/*<input*/}
+                                                                                            {/*    value={type}*/}
+                                                                                            {/*    onChange={handleChangeType}*/}
+                                                                                            {/*    type="text"*/}
+                                                                                            {/*    id={"type"}*/}
+                                                                                            {/*    className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-0"*/}
+                                                                                            {/*/>*/}
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
