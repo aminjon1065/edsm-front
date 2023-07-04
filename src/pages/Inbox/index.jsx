@@ -32,7 +32,7 @@ const Index = () => {
     });
     const selectorNotification = useSelector(state => state.notificationModal);
     useEffect(() => {
-        refetch()
+        refetch();
     }, [selectorNotification, refetch])
     const handleValueChange = (newValue) => {
         setDates(newValue);
@@ -65,8 +65,9 @@ const Index = () => {
         setSearchText(event.target.value);
     };
 
-    const showMailItem = (uuid) => {
+    const showMailItem = async (uuid) => {
         navigate(`/inbox/${uuid}`);
+        await refetch();
     };
 
     if (isLoading) {
@@ -229,7 +230,7 @@ const Index = () => {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                         <span
-                                                            className={`${mail.document.type === 'Иностранные' ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' : mail.document.type === 'Внутренные' ? 'bg-gradient-to-r from-slate-500 from-10% to-slate-700 text-white' : mail.document.type==="Контрольные" ? 'bg-gradient-to-r from-pink-500 from-10% to-red-500 text-white' : "bg-gray-500"} text-slate-950 px-4 py-2 rounded`}>{mail.document.type}</span>
+                                                            className={`${mail.document.type === 'Иностранные' ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' : mail.document.type === 'Внутренные' ? 'bg-gradient-to-r from-slate-500 from-10% to-slate-700 text-white' : mail.document.type === "Контрольные" ? 'bg-gradient-to-r from-pink-500 from-10% to-red-500 text-white' : "bg-gray-500"} text-slate-950 px-4 py-2 rounded`}>{mail.document.type}</span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{mail.document.status}</td>
                                                 <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 `}>
