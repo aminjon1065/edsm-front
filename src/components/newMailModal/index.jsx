@@ -278,13 +278,16 @@ export default function Index({open, setOpen}) {
                                                                                                     Выберите вариант
                                                                                                 </option>
                                                                                                 <option
-                                                                                                    value="Иностранные">Иностранные
+                                                                                                    value="Министерства и Ведомства">Министерства и Ведомства
+                                                                                                </option>
+                                                                                                <option
+                                                                                                    value="Правительственные">Правительственные
                                                                                                 </option>
                                                                                                 <option
                                                                                                     value="Внутренные">Внутренные
                                                                                                 </option>
                                                                                                 <option
-                                                                                                    value="Контрольные">Контрольные
+                                                                                                    value="Гузориш">Гузориш
                                                                                                 </option>
                                                                                             </select>
                                                                                             {/*<input*/}
