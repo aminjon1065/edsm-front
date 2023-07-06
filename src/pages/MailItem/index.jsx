@@ -184,7 +184,8 @@ const Index = () => {
                                                             </p>
                                                         </div>
                                                         <div className="text-right text-sm whitespace-nowrap">
-                                                            <time dateTime={item.created_at}>{formatterDay(item.created_at)}</time>
+                                                            <time
+                                                                dateTime={item.created_at}>{formatterDay(item.created_at)}</time>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -243,20 +244,8 @@ const Index = () => {
                         data.document.file.length > 0
                             ?
                             data.document.file.map((item, index) => (
-                                (item.extension_file === 'jpg' || 'png'
+                                (item.extension_file === 'pdf'
                                         ?
-                                        <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-5"}>
-                                            <div key={item.id}>
-                                                <div className="ml-4 flex-shrink-0">
-                                                    <img
-                                                        src={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
-                                                        alt={item.name_file}
-                                                        className="font-medium text-indigo-600 hover:text-indigo-500 w-96 rounded-lg"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        :
                                         <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-full mb-5"}>
                                             <div className={"w-full h-5/6 rounded block"}>
                                                 <div className="h-screen">
@@ -266,7 +255,40 @@ const Index = () => {
                                                 </div>
                                             </div>
                                         </div>
-
+                                        :
+                                        item.extension_file === 'jpg' || item.extension_file === 'png'
+                                            ?
+                                            <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 mb-5"}>
+                                                <div key={item.id}>
+                                                    <div className="ml-4 flex-shrink-0">
+                                                        <img
+                                                            src={`${PUBLIC_APP_URL_DOCUMENTS}${data.document.region}/${item.name_file}`}
+                                                            alt={item.name_file}
+                                                            className="font-medium text-indigo-600 hover:text-indigo-500 w-96 rounded-lg"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            :
+                                            item.extension_file === "doc" || "docx"
+                                                ?
+                                                <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-full mb-5"}>
+                                                    <div className={"w-full h-5/6 rounded block"}>
+                                                        <div className={""}>
+                                                            <iframe
+                                                                className={"mx-auto"}
+                                                                src={`https://view.officeapps.live.com/op/embed.aspx?src=http://ieee802.org/secmail/docIZSEwEqHFr.doc`}
+                                                                width='1366px' height='623px'>This is an
+                                                                embedded <a target='_blank' href='http://office.com'>Microsoft
+                                                                    Office</a> document, powered by <a target='_blank'
+                                                                                                       href='http://office.com/webapps'>Office
+                                                                    Online</a>.
+                                                            </iframe>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                :
+                                                null
                                 )))
                             :
                             <span>Файлов нет!</span>
