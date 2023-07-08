@@ -35,7 +35,7 @@ const Index = () => {
         api.post(`/showed/${id}`).then((res) => {
             console.log('res')
         }).catch((err) => {
-            console.log('err')
+            console.log(err)
         })
     }
     if (isLoading) {
@@ -275,13 +275,14 @@ const Index = () => {
                                                 <div className={"w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-full mb-5"}>
                                                     <div className={"w-full h-5/6 rounded block"}>
                                                         <div className={""}>
+                                                            {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
                                                             <iframe
                                                                 className={"mx-auto"}
                                                                 src={`https://view.officeapps.live.com/op/embed.aspx?src=http://ieee802.org/secmail/docIZSEwEqHFr.doc`}
                                                                 width='1366px' height='623px'>This is an
-                                                                embedded <a target='_blank' href='http://office.com'>Microsoft
+                                                                embedded <a target='_blank' href='http://office.com' rel="noreferrer">Microsoft
                                                                     Office</a> document, powered by <a target='_blank'
-                                                                                                       href='http://office.com/webapps'>Office
+                                                                                                       href='http://office.com/webapps' rel="noreferrer">Office
                                                                     Online</a>.
                                                             </iframe>
                                                         </div>
